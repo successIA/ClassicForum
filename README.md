@@ -16,7 +16,7 @@ A discussion forum that serves as a medium for users to create topics, reply to 
 ![Thread Page](https://github.com/successIA/Forum/blob/master/screenshots/screenshot2.png?raw=true)
 
 ## Requirement
-- python >= 3.6
+- python == 3.9
 
 ## Installation
 ```shell
@@ -27,5 +27,6 @@ pip install -r requirements.txt
 python manage.py migrate
 python manage.py createsuperuser --username admin --email a@a.com
 python manage.py loaddata category.json
+python manage.py collectstatic
 python manage.py runserver
 ```
