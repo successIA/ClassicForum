@@ -7,9 +7,9 @@ from forum.comments.models import Comment, CommentRevision
 class CommentInline(admin.TabularInline):
     model = CommentRevision
 
+@admin.register(Comment)
 class CommentAdmin(admin.ModelAdmin):
     inlines = [
         CommentInline,
     ]
     
-admin.site.register(Comment, CommentAdmin)

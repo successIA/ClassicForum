@@ -229,7 +229,7 @@ EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 
 MAX_IMAGE_UPLOAD_SIZE = 500 * 1024 # 500KB
 
-PASSWORD_RESET_TIMEOUT_DAYS = 1 # 1 day
+PASSWORD_RESET_TIMEOUT = 60 * 60 * 24 * 1 # 1 day
 
 ADMIN_URL = config('ADMIN_URL', r'^admin/')
 

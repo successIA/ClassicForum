@@ -1,4 +1,4 @@
-from django.conf.urls import url
+from django.urls import path
 
 from forum.comments.views import (
     create_comment,
@@ -11,9 +11,9 @@ from forum.comments.views import (
 app_name = 'comments'
 
 urlpatterns = [
-    url(r'(?P<pk>[0-9]+)/reply/$', reply_comment, name='comment_reply'),
-    url(r'(?P<pk>[0-9]+)/like/$', like_comment, name='like'),
-    url(r'(?P<pk>[0-9]+)/$', update_comment, name='comment_update'),
-    url(r'add/$', create_comment, name='comment_create'),
-    url(r'(?P<pk>[0-9]+)/report/$', report_comment, name='report'),
+    path('<int:pk>/reply/', reply_comment, name='comment_reply'),
+    path('<int:pk>/like/', like_comment, name='like'),
+    path('<int:pk>/', update_comment, name='comment_update'),
+    path('add/', create_comment, name='comment_create'),
+    path('<int:pk>/report/', report_comment, name='report'),
 ]

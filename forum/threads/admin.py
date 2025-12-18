@@ -13,12 +13,12 @@ class CommentInline(admin.TabularInline):
     model = Comment
 
 
+@admin.register(Thread)
 class ThreadAdmin(admin.ModelAdmin):
     inlines = [
         CommentInline
     ]
 
 
-admin.site.register(Thread, ThreadAdmin)
 admin.site.register(ThreadRevision)
 admin.site.register(ThreadFollowership)

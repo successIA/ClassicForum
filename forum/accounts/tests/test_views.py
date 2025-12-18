@@ -9,7 +9,7 @@ from django.core.paginator import Page
 from django.test import Client, RequestFactory, override_settings
 from django.urls import reverse
 from django.utils import timezone
-from django.utils.encoding import force_bytes, force_text
+from django.utils.encoding import force_bytes, force_str
 from django.utils.http import urlsafe_base64_decode, urlsafe_base64_encode
 
 from faker import Faker
