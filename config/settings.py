@@ -25,110 +25,103 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = config(
-    'SECRET_KEY', default='g*y62dzxc3rhyk4cot@pvn4f&ljk&1tfcpx*c3x+b^fw$(t+k-'
+    "SECRET_KEY", default="g*y62dzxc3rhyk4cot@pvn4f&ljk&1tfcpx*c3x+b^fw$(t+k-"
 )
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = config('DEBUG', default=True, cast=bool)
+DEBUG = config("DEBUG", default=True, cast=bool)
 
-ALLOWED_HOSTS = config('ALLOWED_HOSTS', default='127.0.0.1', cast=Csv())
+ALLOWED_HOSTS = config("ALLOWED_HOSTS", default="127.0.0.1", cast=Csv())
 
 # Application definition
 
 INSTALLED_APPS = [
-    'django.contrib.admin',
-    'django.contrib.auth',
-    'django.contrib.contenttypes',
-    'django.contrib.sessions',
-    'django.contrib.messages',
-    'django.contrib.staticfiles',
-
+    "django.contrib.admin",
+    "django.contrib.auth",
+    "django.contrib.contenttypes",
+    "django.contrib.sessions",
+    "django.contrib.messages",
+    "django.contrib.staticfiles",
     # ACTIVATED
-    'django.contrib.humanize',
-    'django.forms',
-
+    "django.contrib.humanize",
+    "django.forms",
     # THIRD PARTY APPS
-    'crispy_forms',
-    'debug_toolbar',
-    'compressor',
-    'django_extensions',
-    'hitcount',
-
+    "crispy_forms",
+    "debug_toolbar",
+    "compressor",
+    "django_extensions",
+    "hitcount",
     # MY APPS
-    'forum.categories',
-    'forum.comments',
-    'forum.threads',
-    'forum.attachments',
-    'forum.accounts',
-    'forum.notifications',
-    'forum.moderation',
+    "forum.categories",
+    "forum.comments",
+    "forum.threads",
+    "forum.attachments",
+    "forum.accounts",
+    "forum.notifications",
+    "forum.moderation",
 ]
 
 MIDDLEWARE = [
-    'django.middleware.security.SecurityMiddleware',
-    
+    "django.middleware.security.SecurityMiddleware",
     # https://warehouse.python.org/project/whitenoise/
-    'whitenoise.middleware.WhiteNoiseMiddleware',
-
-    'django.contrib.sessions.middleware.SessionMiddleware',
-    'django.middleware.common.CommonMiddleware',
-    'django.middleware.csrf.CsrfViewMiddleware',
-    'django.contrib.auth.middleware.AuthenticationMiddleware',
-    'django.contrib.messages.middleware.MessageMiddleware',
-    'django.middleware.clickjacking.XFrameOptionsMiddleware',
-
+    "whitenoise.middleware.WhiteNoiseMiddleware",
+    "django.contrib.sessions.middleware.SessionMiddleware",
+    "django.middleware.common.CommonMiddleware",
+    "django.middleware.csrf.CsrfViewMiddleware",
+    "django.contrib.auth.middleware.AuthenticationMiddleware",
+    "django.contrib.messages.middleware.MessageMiddleware",
+    "django.middleware.clickjacking.XFrameOptionsMiddleware",
     # PROJECT MIDDLEWARE
-    'forum.accounts.middleware.UserLastSeenMiddleware',
+    "forum.accounts.middleware.UserLastSeenMiddleware",
 ]
 
 if DEBUG:
-    MIDDLEWARE.insert(0, 'debug_toolbar.middleware.DebugToolbarMiddleware')
+    MIDDLEWARE.insert(0, "debug_toolbar.middleware.DebugToolbarMiddleware")
 
-ROOT_URLCONF = 'config.urls'
+ROOT_URLCONF = "config.urls"
 
 TEMPLATES = [
     {
-        'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [os.path.join('forum', 'templates')],
-        'APP_DIRS': True,
-        'OPTIONS': {
-            'context_processors': [
-                'django.template.context_processors.debug',
-                'django.template.context_processors.request',
-                'django.contrib.auth.context_processors.auth',
-                'django.contrib.messages.context_processors.messages',
-                'django.template.context_processors.media',
-                'django.template.context_processors.static',
+        "BACKEND": "django.template.backends.django.DjangoTemplates",
+        "DIRS": [os.path.join("forum", "templates")],
+        "APP_DIRS": True,
+        "OPTIONS": {
+            "context_processors": [
+                "django.template.context_processors.debug",
+                "django.template.context_processors.request",
+                "django.contrib.auth.context_processors.auth",
+                "django.contrib.messages.context_processors.messages",
+                "django.template.context_processors.media",
+                "django.template.context_processors.static",
             ],
-            'libraries': {
-                'forum_template_tags': 'forum.templatetags.forum_template_tags',
-                'moderation_template_tags': 'forum.templatetags.moderation_template_tags',
-            }
+            "libraries": {
+                "forum_template_tags": "forum.templatetags.forum_template_tags",
+                "moderation_template_tags": "forum.templatetags.moderation_template_tags",
+            },
         },
     },
 ]
 
-WSGI_APPLICATION = 'config.wsgi.application'
+WSGI_APPLICATION = "config.wsgi.application"
 
 
 # Database
 # https://docs.djangoproject.com/en/1.11/ref/settings/#databases
 
 if "DATABASE_URL" in os.environ:
-    DATABASES = {
-        "default": dj_database_url.config(
-            conn_max_age=600,
-            ssl_require=True
-        )
-    }
+    DATABASES = {"default": dj_database_url.config(conn_max_age=600, ssl_require=True)}
 else:
     DATABASES = {
         "default": {
             "ENGINE": "django.db.backends.sqlite3",
-            "NAME": os.path.join(BASE_DIR, 'db.sqlite3'),
+            "NAME": os.path.join(BASE_DIR, "db.sqlite3"),
         }
     }
 
+# Default primary key type
+# https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field
+
+DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
 
 # Password validation
@@ -136,16 +129,16 @@ else:
 
 AUTH_PASSWORD_VALIDATORS = [
     {
-        'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator',
+        "NAME": "django.contrib.auth.password_validation.UserAttributeSimilarityValidator",
     },
     {
-        'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator',
+        "NAME": "django.contrib.auth.password_validation.MinimumLengthValidator",
     },
     {
-        'NAME': 'django.contrib.auth.password_validation.CommonPasswordValidator',
+        "NAME": "django.contrib.auth.password_validation.CommonPasswordValidator",
     },
     {
-        'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
+        "NAME": "django.contrib.auth.password_validation.NumericPasswordValidator",
     },
 ]
 
@@ -153,9 +146,9 @@ AUTH_PASSWORD_VALIDATORS = [
 # Internationalization
 # https://docs.djangoproject.com/en/1.11/topics/i18n/
 
-LANGUAGE_CODE = 'en-us'
+LANGUAGE_CODE = "en-us"
 
-TIME_ZONE = 'Africa/Lagos'
+TIME_ZONE = "Africa/Lagos"
 
 USE_I18N = True
 
@@ -165,72 +158,67 @@ USE_TZ = True
 
 # Sentry Integration
 sentry_sdk.init(
-    dsn=config('SENTRY_DSN', ''),
+    dsn=config("SENTRY_DSN", ""),
     integrations=[DjangoIntegration()],
-
     # If you wish to associate users to errors (assuming you are using
     # django.contrib.auth) you may enable sending PII data.
-    send_default_pii=True
+    send_default_pii=True,
 )
 
-AUTH_USER_MODEL = 'accounts.User'
-LOGIN_URL = '/accounts/auth/login/'
-LOGIN_REDIRECT_URL = 'home'
-LOGOUT_REDIRECT_URL = 'home'
+AUTH_USER_MODEL = "accounts.User"
+LOGIN_URL = "/accounts/auth/login/"
+LOGIN_REDIRECT_URL = "home"
+LOGOUT_REDIRECT_URL = "home"
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.11/howto/static-files/
 STATICFILES_FINDERS = [
-    'django.contrib.staticfiles.finders.FileSystemFinder',
-    'django.contrib.staticfiles.finders.AppDirectoriesFinder',
-    'compressor.finders.CompressorFinder',
+    "django.contrib.staticfiles.finders.FileSystemFinder",
+    "django.contrib.staticfiles.finders.AppDirectoriesFinder",
+    "compressor.finders.CompressorFinder",
 ]
 
-STATIC_URL = '/static/'
+STATIC_URL = "/static/"
 
-STATICFILES_DIRS = (
-    os.path.join(BASE_DIR, 'forum', 'static'),
-)
+STATICFILES_DIRS = (os.path.join(BASE_DIR, "forum", "static"),)
 
-STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+STATIC_ROOT = os.path.join(BASE_DIR, "staticfiles")
 
 # https://warehouse.python.org/project/whitenoise/
-STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
 
-COMPRESS_STORAGE = 'compressor.storage.GzipCompressorFileStorage'
-COMPRESS_PRECOMPILERS = (
-    ('text/x-scss', 'django_libsass.SassCompiler'),
-)
+COMPRESS_STORAGE = "compressor.storage.GzipCompressorFileStorage"
+COMPRESS_PRECOMPILERS = (("text/x-scss", "django_libsass.SassCompiler"),)
 COMPRESS_FILTERS = {
-    'css': [
-        'compressor.filters.css_default.CssAbsoluteFilter', 
-        'compressor.filters.cssmin.rCSSMinFilter'
+    "css": [
+        "compressor.filters.css_default.CssAbsoluteFilter",
+        "compressor.filters.cssmin.rCSSMinFilter",
     ],
-    'js': ['compressor.filters.jsmin.JSMinFilter']
+    "js": ["compressor.filters.jsmin.JSMinFilter"],
 }
-COMPRESS_OFFLINE = config('COMPRESS_OFFLINE', default=False, cast=bool)
+COMPRESS_OFFLINE = config("COMPRESS_OFFLINE", default=False, cast=bool)
 
-MEDIA_ROOT = os.path.join(BASE_DIR, 'forum', 'media')
-TEST_MEDIA_ROOT = os.path.join(BASE_DIR, 'forum', 'testmedia')
+MEDIA_ROOT = os.path.join(BASE_DIR, "forum", "media")
+TEST_MEDIA_ROOT = os.path.join(BASE_DIR, "forum", "testmedia")
 
-MEDIA_URL = '/media/'
+MEDIA_URL = "/media/"
 
 # crispy form
-CRISPY_TEMPLATE_PACK = 'bootstrap4'
+CRISPY_TEMPLATE_PACK = "bootstrap4"
 
 
-FORM_RENDERER = 'django.forms.renderers.TemplatesSetting'
+FORM_RENDERER = "django.forms.renderers.TemplatesSetting"
 
 # https://django-debug-toolbar.readthedocs.io/en/latest/installation.html#internal-ips
-INTERNAL_IPS = ['127.0.0.1']
+INTERNAL_IPS = ["127.0.0.1"]
 
-EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
 
 
-MAX_IMAGE_UPLOAD_SIZE = 500 * 1024 # 500KB
+MAX_IMAGE_UPLOAD_SIZE = 500 * 1024  # 500KB
 
-PASSWORD_RESET_TIMEOUT = 60 * 60 * 24 * 1 # 1 day
+PASSWORD_RESET_TIMEOUT = 60 * 60 * 24 * 1  # 1 day
 
-ADMIN_URL = config('ADMIN_URL', r'^admin/')
+ADMIN_URL = config("ADMIN_URL", r"^admin/")
 
 CONFIRM_EMAIL = False
