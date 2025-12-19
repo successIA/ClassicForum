@@ -1,18 +1,14 @@
 import os
-import uuid
 
 from django.conf import settings
 from django.core.files.storage import FileSystemStorage
 from django.db import models
-from django.utils.crypto import get_random_string
-from django.utils.text import slugify
 
 from forum.attachments.utils import (
     get_image_srcs_from_msg,
     get_unref_image_srcs_in_msg,
     md5,
 )
-from forum.core.models import TimeStampedModel
 
 
 class MediaFileSystemStorage(FileSystemStorage):
@@ -51,10 +47,10 @@ class AttachmentQuerySet(models.query.QuerySet):
                 att.save()
 
     def _remove_comment_from_attachment(self, comment, prev_msg):
-        '''
+        """
         Detach comment from all its attachments if there is any
         change in the image urls in the message
-        '''
+        """
         unreferenced_image_sources = get_unref_image_srcs_in_msg(
             prev_msg, comment.message
         )
@@ -74,12 +70,11 @@ class AttachmentQuerySet(models.query.QuerySet):
                 attachment.is_orphaned = True
                 attachment.save()
 
-
     def create_avatar(self, image, user):
         if image:
             if user.avatar_url:
                 self._update_users(user)
-            
+
             md5sum = md5(image)
             qs = self.filter(md5sum=md5sum, is_avatar=True)[:1]
             attachment = qs[0] if qs else None
@@ -91,10 +86,7 @@ class AttachmentQuerySet(models.query.QuerySet):
                 return attachment.url
             else:
                 attachment = self.create(
-                    image=image, 
-                    filename=image.name, 
-                    is_avatar=True, 
-                    is_orphaned=False
+                    image=image, filename=image.name, is_avatar=True, is_orphaned=False
                 )
                 attachment.users.add(user)
                 return attachment.url
@@ -108,7 +100,7 @@ class Attachment(models.Model):
     )
     url = models.URLField(max_length=2000, blank=True)
     filename = models.CharField(max_length=255)
-    comments = models.ManyToManyField('comments.Comment', blank=True)
+    comments = models.ManyToManyField("comments.Comment", blank=True)
     users = models.ManyToManyField(settings.AUTH_USER_MODEL, blank=True)
     md5sum = models.CharField(max_length=36, blank=True)
     is_avatar = models.BooleanField(default=False)
@@ -124,6 +116,6 @@ class Attachment(models.Model):
         self.filename = self.image.name
         super().save(*args, **kwargs)
         self.url = self.image.url
-        kwargs['force_update'] = True
-        kwargs['force_insert'] = False
+        kwargs["force_update"] = True
+        kwargs["force_insert"] = False
         super().save(*args, **kwargs)

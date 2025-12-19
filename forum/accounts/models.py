@@ -1,29 +1,21 @@
 from datetime import timedelta
 
-from django.conf import settings
 from django.contrib.auth.models import AbstractUser
-from django.contrib.contenttypes.fields import GenericRelation
-from django.urls import reverse, reverse_lazy
 from django.db import models
-from django.db.models import CharField, Count, F, Max, Min, Prefetch, Value
+from django.urls import reverse
 from django.utils import timezone
 
-from forum.core.models import TimeStampedModel
 from forum.notifications.models import Notification
 
 
 class User(AbstractUser):
-    GENDER_OPTIONS = (
-        ('M', 'Male'),
-        ('F', 'Female')
-    )
-    gender = models.CharField(
-        max_length=20, choices=GENDER_OPTIONS, blank=True)
+    GENDER_OPTIONS = (("M", "Male"), ("F", "Female"))
+    gender = models.CharField(max_length=20, choices=GENDER_OPTIONS, blank=True)
     signature = models.TextField(max_length=127, blank=True)
     location = models.CharField(max_length=32, blank=True)
     website = models.URLField(max_length=50, blank=True)
     followers = models.ManyToManyField(
-        'self', related_name='following', symmetrical=False, blank=True
+        "self", related_name="following", symmetrical=False, blank=True
     )
     last_seen = models.DateTimeField(default=timezone.now)
     email_confirmed = models.BooleanField(default=False)
@@ -41,17 +33,17 @@ class User(AbstractUser):
         return self == user
 
     def is_required_filter_owner(self, user, filter_str):
-        owner_only = ['following', 'new']
+        owner_only = ["following", "new"]
         if filter_str not in owner_only:
             return True
         return self.is_owner(user)
-    
+
     @property
     def is_supermoderator(self):
         return self.is_superuser and self.is_moderator
 
     def get_avatar_url(self):
-        url = '/static/img/avatar.svg'
+        url = "/static/img/avatar.svg"
         if self.avatar_url:
             url = self.avatar_url
         return url
@@ -65,30 +57,24 @@ class User(AbstractUser):
         if follower not in self.followers.all():
             self.followers.add(follower)
             Notification.objects.create(
-                sender=follower, 
-                receiver=self,
-                notif_type=Notification.USER_FOLLOWED
+                sender=follower, receiver=self, notif_type=Notification.USER_FOLLOWED
             )
             return True
         else:
             self.followers.remove(follower)
             Notification.objects.filter(
-                sender=follower, 
-                receiver=self,
-                notif_type=Notification.USER_FOLLOWED
+                sender=follower, receiver=self, notif_type=Notification.USER_FOLLOWED
             ).delete()
         return is_follower
 
     def get_absolute_url(self):
-        return reverse('accounts:user_stats', kwargs={'username': self.username})
+        return reverse("accounts:user_stats", kwargs={"username": self.username})
 
     def get_user_follow_url(self):
-        return reverse('accounts:user_follow', kwargs={'username': self.username})
+        return reverse("accounts:user_follow", kwargs={"username": self.username})
 
     def get_userprofile_update_url(self):
-        return reverse(
-            'accounts:user_edit', kwargs={'username': self.username}
-        )
+        return reverse("accounts:user_edit", kwargs={"username": self.username})
 
     def get_login_url(self):
-        return reverse('accounts:login')
+        return reverse("accounts:login")

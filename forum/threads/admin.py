@@ -1,5 +1,4 @@
 from django.contrib import admin
-from django.contrib.contenttypes.admin import GenericTabularInline
 
 from forum.comments.models import Comment
 from forum.threads.models import Thread, ThreadFollowership, ThreadRevision
@@ -15,9 +14,7 @@ class CommentInline(admin.TabularInline):
 
 @admin.register(Thread)
 class ThreadAdmin(admin.ModelAdmin):
-    inlines = [
-        CommentInline
-    ]
+    inlines = [CommentInline]
 
 
 admin.site.register(ThreadRevision)

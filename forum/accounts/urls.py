@@ -1,7 +1,5 @@
-from django.urls import path, re_path
 from django.contrib.auth import views as auth_views
-from django.urls import reverse, reverse_lazy
-from django.urls import path
+from django.urls import path, re_path, reverse_lazy
 
 from forum.accounts.forms import UserPasswordChangeForm
 from forum.accounts.views import (
@@ -20,7 +18,6 @@ from forum.accounts.views import (
     user_profile_stats,
     user_thread_list,
 )
-
 
 app_name = "accounts"
 
@@ -118,7 +115,9 @@ urlpatterns = [
     re_path(
         r"(?P<username>[\w-]+)/user-followers/$", user_followers, name="user_followers"
     ),
-    re_path(r"(?P<username>[\w-]+)/comments/$", user_comment_list, name="user_comments"),
+    re_path(
+        r"(?P<username>[\w-]+)/comments/$", user_comment_list, name="user_comments"
+    ),
     re_path(
         r"(?P<username>[\w-]+)/notifications/$",
         user_notification_list,

@@ -1,12 +1,8 @@
-from django.urls import reverse
-from django.utils import timezone
-
 from faker import Faker
 from test_plus import TestCase
 
 from forum.categories.models import Category
 from forum.comments.models import Comment
-from forum.comments.tests.utils import make_comment
 from forum.threads.models import Thread
 
 fake = Faker()
@@ -19,16 +15,13 @@ class CommentModelTest(TestCase):
             title="progromming group", description="NA"
         )
         self.thread = Thread.objects.create(
-            title="python discussion",
-            body="NA",
-            user=self.user,
-            category=self.category
+            title="python discussion", body="NA", user=self.user, category=self.category
         )
         self.comment = Comment.objects.create(
-            message='test message',
+            message="test message",
             user=self.user,
             thread=self.thread,
-            is_starting_comment=True
+            is_starting_comment=True,
         )
 
     # def test_delete(self):
@@ -50,17 +43,17 @@ class CommentModelTest(TestCase):
     #     self.assertEqual(comment2.offset, -2)
 
     def test_is_owner(self):
-        second_user = self.make_user('testuser2')
+        second_user = self.make_user("testuser2")
         self.assertFalse(self.comment.is_owner(second_user))
         self.assertTrue(self.comment.is_owner(self.user))
 
-    def test_toggle_like_with_new_liker(self):        
-        second_user = self.make_user('testuser2')
+    def test_toggle_like_with_new_liker(self):
+        second_user = self.make_user("testuser2")
         self.comment.toggle_like(second_user)
         self.assertIn(second_user, self.comment.likers.all())
 
     def test_toggle_like_with_liker(self):
-        second_user = self.make_user('testuser2')
+        second_user = self.make_user("testuser2")
         self.comment.likers.add(second_user)
         self.comment.toggle_like(second_user)
         self.assertNotIn(second_user, self.comment.likers.all())

@@ -1,7 +1,6 @@
 from django.contrib import messages
 from django.contrib.auth import get_user_model
 from django.contrib.auth.decorators import login_required
-from django.core.exceptions import PermissionDenied
 from django.db import transaction
 from django.shortcuts import (
     Http404,
@@ -11,7 +10,6 @@ from django.shortcuts import (
     render,
 )
 
-from ..comments.models import Comment
 from .events import (
     create_category_changed_event,
     create_moderator_added_event,
@@ -68,9 +66,9 @@ def update_moderator(request, username):
             curr_cats = mod.categories.all()
             create_category_changed_event(user, prev_cats, curr_cats)
             messages.success(
-                request, 
+                request,
                 f"<strong>{user.username}</strong>'s categories field"
-                 " was updated successfully"
+                " was updated successfully",
             )
             return redirect("moderation:moderator_list")
     context = {"moderator": mod, "form": form, "prev_cats": prev_cats}
@@ -88,8 +86,7 @@ def delete_moderator(request, username):
         mod.delete()
         create_moderator_removed_event(user, cats)
         messages.success(
-            request, 
-            f"<strong>{user.username}</strong> is no longer a moderator!"
+            request, f"<strong>{user.username}</strong> is no longer a moderator!"
         )
         return redirect("moderation:moderator_list")
 
@@ -98,9 +95,7 @@ def delete_moderator(request, username):
 @staff_member_required
 def moderator_list(request):
     moderators = Moderator.objects.select_related("user").all()
-    return render(
-        request, "moderation/moderator_list.html", {"moderators": moderators}
-    )
+    return render(request, "moderation/moderator_list.html", {"moderators": moderators})
 
 
 @login_required
@@ -133,8 +128,7 @@ def hide_thread(request, slug, thread=None, mod=None):
                 thread=thread,
             )
         messages.success(
-            request, f"<strong>{thread.title}</strong> has been"
-            " hidden successfully"
+            request, f"<strong>{thread.title}</strong> has been hidden successfully"
         )
         return redirect(mod)
     raise Http404
@@ -175,8 +169,8 @@ def hide_comment(request, thread_slug, comment_pk, comment=None, mod=None):
                 comment=comment,
             )
         messages.success(
-            request, f"<strong>{comment.user.username}</strong>'s comment hidden"
-                      " successfully!"
+            request,
+            f"<strong>{comment.user.username}</strong>'s comment hidden successfully!",
         )
         return redirect(redirect_to)
     raise Http404
@@ -196,8 +190,9 @@ def unhide_comment(request, thread_slug, comment_pk, comment=None, mod=None):
                 comment=comment,
             )
         messages.success(
-            request, f"<strong>{comment.user.username}</strong>'s comment"
-                     " is now visible to all users"
+            request,
+            f"<strong>{comment.user.username}</strong>'s comment"
+            " is now visible to all users",
         )
         return redirect(comment.get_precise_url())
     raise Http404

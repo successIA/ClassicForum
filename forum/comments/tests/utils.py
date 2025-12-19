@@ -23,7 +23,7 @@ def make_comment(
                 is_starting_comment=is_starting_comment,
                 visible=visible,
                 created=timezone.now(),
-                modified=timezone.now()
+                modified=timezone.now(),
             )
         )
     Comment.objects.bulk_create(comment_list)

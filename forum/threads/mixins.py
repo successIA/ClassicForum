@@ -1,8 +1,5 @@
-from django.contrib.auth.decorators import login_required
 from django.core.exceptions import PermissionDenied
-from django.http import Http404
 from django.shortcuts import get_object_or_404
-from django.utils.decorators import method_decorator
 
 from forum.moderation.utils import can_see_post_or_404
 from forum.threads.models import Thread
@@ -11,13 +8,12 @@ from forum.threads.models import Thread
 def thread_adder(function):
     def wrap(request, *args, **kwargs):
         if kwargs.get("thread"):
-            can_see_post_or_404(request, kwargs["thread"])            
+            can_see_post_or_404(request, kwargs["thread"])
         else:
-            thread = get_object_or_404(
-                Thread, slug=kwargs.get("thread_slug")
-            )
-            kwargs["thread"] = can_see_post_or_404(request, thread)        
+            thread = get_object_or_404(Thread, slug=kwargs.get("thread_slug"))
+            kwargs["thread"] = can_see_post_or_404(request, thread)
         return function(request, *args, **kwargs)
+
     wrap.__doc__ = function.__doc__
     wrap.__name__ = function.__name__
     return wrap
@@ -28,6 +24,7 @@ def thread_owner_required(function):
         if not kwargs["thread"].is_owner(request.user):
             raise PermissionDenied
         return function(request, *args, **kwargs)
+
     wrap.__doc__ = function.__doc__
     wrap.__name__ = function.__name__
     return wrap

@@ -8,12 +8,12 @@ from forum.comments.views import (
     update_comment,
 )
 
-app_name = 'comments'
+app_name = "comments"
 
 urlpatterns = [
-    path('<int:pk>/reply/', reply_comment, name='comment_reply'),
-    path('<int:pk>/like/', like_comment, name='like'),
-    path('<int:pk>/', update_comment, name='comment_update'),
-    path('add/', create_comment, name='comment_create'),
-    path('<int:pk>/report/', report_comment, name='report'),
+    path("<int:pk>/reply/", reply_comment, name="comment_reply"),
+    path("<int:pk>/like/", like_comment, name="like"),
+    path("<int:pk>/", update_comment, name="comment_update"),
+    path("add/", create_comment, name="comment_create"),
+    path("<int:pk>/report/", report_comment, name="report"),
 ]

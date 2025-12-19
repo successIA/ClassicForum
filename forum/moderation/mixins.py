@@ -1,9 +1,8 @@
-from django.contrib.admin.views.decorators import \
-    staff_member_required as _staff_member_required
-from django.contrib.admin.views.decorators import user_passes_test
-from django.contrib.auth import REDIRECT_FIELD_NAME, get_user_model
+from django.contrib.admin.views.decorators import (
+    staff_member_required as _staff_member_required,
+)
+from django.contrib.auth import get_user_model
 from django.core.exceptions import PermissionDenied
-from django.http import Http404
 from django.shortcuts import get_object_or_404
 
 from ..comments.models import Comment
@@ -22,7 +21,8 @@ def moderator_required(f):
         if request.user.is_moderator:
             return f(request, *args, **kwargs)
         else:
-            raise PermissionDenied        
+            raise PermissionDenied
+
     wrap.__doc__ = f.__doc__
     wrap.__name__ = f.__name__
     return wrap
@@ -31,17 +31,15 @@ def moderator_required(f):
 def supermoderator_or_moderator_owner_required(f):
     @moderator_required
     def wrap(request, *args, **kwargs):
-        mod_profile = get_object_or_404(
-            Moderator, user__username=kwargs["username"]
-        )
-        if (
-            request.user.moderator.is_supermoderator_to(mod_profile) or
-            mod_profile.is_owner(request.user.moderator)
-        ):
+        mod_profile = get_object_or_404(Moderator, user__username=kwargs["username"])
+        if request.user.moderator.is_supermoderator_to(
+            mod_profile
+        ) or mod_profile.is_owner(request.user.moderator):
             kwargs["mod_profile"] = mod_profile
             return f(request, *args, **kwargs)
         else:
             raise PermissionDenied
+
     wrap.__doc__ = f.__doc__
     wrap.__name__ = f.__name__
     return wrap
@@ -66,6 +64,7 @@ def post_moderator_required(f):
         if not kwargs["mod"].is_moderating_post(kwargs[post_key]):
             raise PermissionDenied
         return f(request, *args, **kwargs)
+
     wrap.__doc__ = f.__doc__
     wrap.__name__ = f.__name__
     return wrap
@@ -79,6 +78,7 @@ def hide_post_permission_required(f):
             return f(request, *args, **kwargs)
         else:
             raise PermissionDenied
+
     wrap.__doc__ = f.__doc__
     wrap.__name__ = f.__name__
     return wrap
@@ -92,6 +92,7 @@ def unhide_post_permission_required(f):
             return f(request, *args, **kwargs)
         else:
             raise PermissionDenied
+
     wrap.__doc__ = f.__doc__
     wrap.__name__ = f.__name__
     return wrap

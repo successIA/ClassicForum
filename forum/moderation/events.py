@@ -6,13 +6,15 @@ def create_moderator_added_event(user, categories):
     event = ModeratorEvent.objects.create(
         event_type=ModeratorEvent.MODERATOR_ADDED, user=user
     )
-    event.categories.add(*categories) 
+    event.categories.add(*categories)
+
 
 def create_moderator_removed_event(user, categories):
     event = ModeratorEvent.objects.create(
         event_type=ModeratorEvent.MODERATOR_REMOVED, user=user
     )
-    event.categories.add(*categories) 
+    event.categories.add(*categories)
+
 
 def create_category_changed_event(user, prev_cats, curr_cats):
     prev_cat_pks = {c.pk for c in prev_cats}
@@ -23,14 +25,12 @@ def create_category_changed_event(user, prev_cats, curr_cats):
 
     if fresh_cats:
         event = ModeratorEvent.objects.create(
-            user=user,
-            event_type=ModeratorEvent.CATEGORY_ADDED
+            user=user, event_type=ModeratorEvent.CATEGORY_ADDED
         )
         event.categories.add(*fresh_cats)
 
     if detached_cats:
         event = ModeratorEvent.objects.create(
-            user=user,
-            event_type=ModeratorEvent.CATEGORY_REMOVED
+            user=user, event_type=ModeratorEvent.CATEGORY_REMOVED
         )
         event.categories.add(*detached_cats)

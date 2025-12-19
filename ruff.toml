@@ -1,0 +1,35 @@
+# Exclude folders/files
+exclude = [
+    ".direnv",
+    ".tox",
+    ".venv",
+    "venv",
+    "docs",
+    "**/migrations",
+    "node_modules",
+]
+
+[lint]
+# Select basic linting, unused code, and import rules
+select = ["E", "F", "I"]
+
+# Configure import sorting (isort-compatible)
+[lint.isort]
+sections.django = ["django"]
+
+# 2. Arrange sections to force blank lines between them
+section-order = [
+    "future",
+    "standard-library",
+    "django",           # Custom section
+    "third-party",      # e.g., markdown
+    "first-party",      # e.g., forum
+    "local-folder",
+]
+
+# 3. Explicitly mark your project as first-party to keep it separate
+known-first-party = ["forum"]
+
+# 4. Optional: Force a blank line between 'import' and 'from' within sections
+# This adds extra separation if you have mixed import styles in one block
+lines-between-types = 1

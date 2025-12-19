@@ -11,7 +11,7 @@ def common_categories(mod_profile, request_user):
 
 
 @register.simple_tag
-def can_hide_post(post, request_user):    
+def can_hide_post(post, request_user):
     return request_user.moderator.can_hide_post(post)
 
 

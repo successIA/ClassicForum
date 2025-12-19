@@ -1,5 +1,5 @@
-from django.urls import reverse
 from django.db import models
+from django.urls import reverse
 from django.utils.text import slugify
 
 from forum.core.models import TimeStampedModel
@@ -8,10 +8,10 @@ from forum.core.models import TimeStampedModel
 class CategoryQuerySet(models.query.QuerySet):
     def get_difference(self, prev_pk_set, curr_pk_set):
         removed_qs = self.none()
-        removed_pk_set = prev_pk_set.difference(curr_pk_set)        
+        removed_pk_set = prev_pk_set.difference(curr_pk_set)
         if removed_pk_set:
-        	removed_qs = self.filter(pk__in=removed_pk_set)
-        
+            removed_qs = self.filter(pk__in=removed_pk_set)
+
         fresh_qs = self.none()
         fresh_pk_set = curr_pk_set.difference(prev_pk_set)
         if fresh_pk_set:
@@ -30,7 +30,7 @@ class Category(TimeStampedModel):
     objects = CategoryQuerySet.as_manager()
 
     class Meta:
-        verbose_name_plural = 'categories'
+        verbose_name_plural = "categories"
 
     def __str__(self):
         return self.title
@@ -38,30 +38,26 @@ class Category(TimeStampedModel):
     def get_moderators(self):
         from forum.moderation.models import Moderator
 
-        return Moderator.objects.get_for_category(
-            self
-        ).select_related('user')
-
+        return Moderator.objects.get_for_category(self).select_related("user")
 
     def save(self, *args, **kwargs):
         self.slug = slugify(self.title)
         super(Category, self).save(*args, **kwargs)
 
     def get_absolute_url(self):
-        return reverse('categories:category_detail', kwargs={'slug': self.slug})
+        return reverse("categories:category_detail", kwargs={"slug": self.slug})
 
     def get_precise_url(self, filter_str, page):
         return reverse(
             "categories:category_detail_filter",
-            kwargs={'slug': self.slug,
-                    'filter_str': filter_str, 'page': page}
+            kwargs={"slug": self.slug, "filter_str": filter_str, "page": page},
         )
 
     def get_thread_create_url(self):
-        return reverse('thread_create', kwargs={'slug': self.slug})
+        return reverse("thread_create", kwargs={"slug": self.slug})
 
     def get_thread_form_action(self, filter_str, page):
-        return '%s#post-form' % reverse(
-            'categories:category_thread_create',
-            kwargs={'slug': self.slug, 'filter_str': filter_str, 'page': page}
+        return "%s#post-form" % reverse(
+            "categories:category_thread_create",
+            kwargs={"slug": self.slug, "filter_str": filter_str, "page": page},
         )

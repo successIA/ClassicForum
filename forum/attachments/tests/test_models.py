@@ -19,22 +19,20 @@ from forum.threads.tests.utils import make_only_thread
 # from forum.attachments.models import upload_to
 
 
-TEST_IMAGES_DIR = os.path.join(os.path.dirname(
-    os.path.abspath(__file__)), 'testimages'
-)
-TEST_IMAGE_1 = os.path.join(TEST_IMAGES_DIR, 'testimage.jpg')
-TEST_IMAGE_2 = os.path.join(TEST_IMAGES_DIR, 'aprf1.jpg')
+TEST_IMAGES_DIR = os.path.join(os.path.dirname(os.path.abspath(__file__)), "testimages")
+TEST_IMAGE_1 = os.path.join(TEST_IMAGES_DIR, "testimage.jpg")
+TEST_IMAGE_2 = os.path.join(TEST_IMAGES_DIR, "aprf1.jpg")
 
-AVATAR_UPLOAD_DIR = os.path.join(settings.TEST_MEDIA_ROOT, 'avatars')
+AVATAR_UPLOAD_DIR = os.path.join(settings.TEST_MEDIA_ROOT, "avatars")
 
 
 @override_settings(MEDIA_ROOT=settings.TEST_MEDIA_ROOT)
 class AttachmentModelTest(TestCase):
     def setUp(self):
         self.test_image = SimpleUploadedFile(
-            name='testimage.jpg',
-            content=open(TEST_IMAGE_1, 'rb').read(),
-            content_type='image/jpeg'
+            name="testimage.jpg",
+            content=open(TEST_IMAGE_1, "rb").read(),
+            content_type="image/jpeg",
         )
 
     def tearDown(self):
@@ -48,22 +46,21 @@ class AttachmentModelTest(TestCase):
     def test_save(self):
         attachment = Attachment.objects.create(image=self.test_image)
         self.assertIsNotNone(attachment.md5sum)
-        self.assertEqual(attachment.filename, 'testimage.jpg')
+        self.assertEqual(attachment.filename, "testimage.jpg")
         self.assertIsInstance(attachment, Attachment)
 
     def test_upload_to(self):
-        attachment = Attachment(image=self.test_image, md5sum='abc')
+        attachment = Attachment(image=self.test_image, md5sum="abc")
         returned_upload_to = upload_to(attachment, attachment.filename)
-        expected_upload_to = 'uploads/%s' % 'abc'
+        expected_upload_to = "uploads/%s" % "abc"
         self.assertEqual(returned_upload_to, expected_upload_to)
 
     def test_upload_to_with_avatar(self):
-        attachment = Attachment(
-            image=self.test_image, md5sum='abc', is_avatar=True
-        )
+        attachment = Attachment(image=self.test_image, md5sum="abc", is_avatar=True)
         returned_upload_to = upload_to(attachment, attachment.filename)
-        expected_upload_to = 'avatars/%s' % 'abc'
+        expected_upload_to = "avatars/%s" % "abc"
         self.assertEqual(returned_upload_to, expected_upload_to)
+
 
 # @override_settings(MEDIA_ROOT=settings.TEST_MEDIA_ROOT)
 # class MediaFileSystemStorageTest(TestCase):
@@ -104,16 +101,16 @@ class AttachmentModelTest(TestCase):
 @override_settings(MEDIA_ROOT=settings.TEST_MEDIA_ROOT)
 class AttachmentQuerySetTest(TestCase):
     def setUp(self):
-        self.user = self.make_user('testuser1')
+        self.user = self.make_user("testuser1")
         self.test_image = SimpleUploadedFile(
-            name='testimage.jpg',
-            content=open(TEST_IMAGE_1, 'rb').read(),
-            content_type='image/jpeg'
+            name="testimage.jpg",
+            content=open(TEST_IMAGE_1, "rb").read(),
+            content_type="image/jpeg",
         )
         self.test_image2 = SimpleUploadedFile(
-            name='aprf1.jpg',
-            content=open(TEST_IMAGE_2, 'rb').read(),
-            content_type='image/jpeg'
+            name="aprf1.jpg",
+            content=open(TEST_IMAGE_2, "rb").read(),
+            content_type="image/jpeg",
         )
         self.current_count = Attachment.objects.count()
 
@@ -138,7 +135,7 @@ class AttachmentQuerySetTest(TestCase):
         self.assertIn(self.user, Attachment.objects.all().first().users.all())
 
     def test_create_avatar_with_duplicate_images(self):
-        second_user = self.make_user('testuser2')
+        second_user = self.make_user("testuser2")
 
         url = Attachment.objects.create_avatar(self.test_image, self.user)
         url2 = Attachment.objects.create_avatar(self.test_image, second_user)
@@ -148,46 +145,35 @@ class AttachmentQuerySetTest(TestCase):
         self.assertEqual(len(files), 1)
         self.assertEqual(url, url2)
         self.assertIn(self.user, Attachment.objects.all().first().users.all())
-        self.assertIn(
-            second_user, Attachment.objects.all().first().users.all()
-        )
+        self.assertIn(second_user, Attachment.objects.all().first().users.all())
 
-    
     def test_synchronise(self):
         attachment = Attachment.objects.create(image=self.test_image)
         category = make_category()
         thread = make_only_thread(self.user, category)
 
-        message = f'![]({attachment.image.url})'
+        message = f"![]({attachment.image.url})"
         comment = make_comment(self.user, thread, message=message)
         Attachment.objects.synchronise(comment)
-        self.assertIn(
-            comment, Attachment.objects.all().first().comments.all()
-        )
+        self.assertIn(comment, Attachment.objects.all().first().comments.all())
         self.assertFalse(Attachment.objects.last().is_orphaned)
-    
+
     def test_synchronise_with_revision(self):
         attachment = Attachment.objects.create(image=self.test_image)
         category = make_category()
         thread = make_only_thread(self.user, category)
 
-        message = f'![]({attachment.image.url})'
+        message = f"![]({attachment.image.url})"
         comment = make_comment(self.user, thread, message=message)
         Attachment.objects.synchronise(comment)
-        self.assertIn(
-            comment, Attachment.objects.all().first().comments.all()
-        )
+        self.assertIn(comment, Attachment.objects.all().first().comments.all())
         self.assertFalse(Attachment.objects.last().is_orphaned)
 
-        Comment.objects.filter(pk=comment.pk).update(
-            message='No more image source'
-        )
+        Comment.objects.filter(pk=comment.pk).update(message="No more image source")
         revision = CommentRevision.objects.create(
             comment=comment, message=comment.message
         )
         comment.refresh_from_db()
         Attachment.objects.synchronise(comment, revision.message)
-        self.assertNotIn(
-            comment, Attachment.objects.all().first().comments.all()
-        )
+        self.assertNotIn(comment, Attachment.objects.all().first().comments.all())
         self.assertTrue(Attachment.objects.last().is_orphaned)

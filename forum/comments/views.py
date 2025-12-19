@@ -1,14 +1,9 @@
-import re
-
 from django.contrib.auth.decorators import login_required
 from django.db import transaction
-from django.http import Http404, HttpResponseRedirect, JsonResponse
-from django.shortcuts import get_object_or_404, render
-from django.utils.decorators import method_decorator
+from django.http import HttpResponseRedirect, JsonResponse
 
 from forum.comments.forms import CommentForm
 from forum.comments.mixins import comment_adder, comment_owner_required
-from forum.comments.models import Comment, CommentRevision
 from forum.comments.utils import (
     create_comment_revision,
     get_comment_reply_form,
@@ -16,7 +11,6 @@ from forum.comments.utils import (
 )
 from forum.notifications.models import Notification
 from forum.threads.mixins import thread_adder
-from forum.threads.models import Thread
 from forum.threads.views import thread_detail
 
 
@@ -24,7 +18,7 @@ from forum.threads.views import thread_detail
 @thread_adder
 def create_comment(request, thread_slug, thread=None):
     form = CommentForm
-    if request.method == 'POST':
+    if request.method == "POST":
         form = CommentForm(request.POST)
         if form.is_valid():
             with transaction.atomic():
@@ -32,11 +26,9 @@ def create_comment(request, thread_slug, thread=None):
                 form.instance.thread = thread
                 form.instance.category = thread.category
                 comment = form.save(commit=False)
-                perform_comment_save(comment) 
+                perform_comment_save(comment)
             return HttpResponseRedirect(comment.get_precise_url())
-    return thread_detail(
-        request, thread_slug, form=form, thread=thread
-    )
+    return thread_detail(request, thread_slug, form=form, thread=thread)
 
 
 @login_required
@@ -44,16 +36,16 @@ def create_comment(request, thread_slug, thread=None):
 @comment_owner_required
 def update_comment(request, thread_slug, pk, comment=None):
     form = CommentForm(instance=comment)
-    if request.method == 'POST':
+    if request.method == "POST":
         # message must be backed up here
         prev_msg = comment.message
         form = CommentForm(request.POST, instance=comment)
-        if form.is_valid():            
+        if form.is_valid():
             with transaction.atomic():
                 form.instance.pk = comment.pk
                 form.instance.user = request.user
                 form.instance.thread = comment.thread
-                # Despite the fact that the comment obj used below has 
+                # Despite the fact that the comment obj used below has
                 # been updated, the current comment in the db will
                 # used for creating a valid revision.
                 create_comment_revision(comment)
@@ -62,11 +54,7 @@ def update_comment(request, thread_slug, pk, comment=None):
             return HttpResponseRedirect(comment.get_precise_url())
 
     form_action = comment.get_update_form_action()
-    kwargs = {
-        'form': form, 
-        'form_action': form_action, 
-        'thread': comment.thread
-    }
+    kwargs = {"form": form, "form_action": form_action, "thread": comment.thread}
     return thread_detail(request, thread_slug, **kwargs)
 
 
@@ -75,7 +63,7 @@ def update_comment(request, thread_slug, pk, comment=None):
 def reply_comment(request, thread_slug, pk, comment=None):
     parent_comment = comment
     form = get_comment_reply_form(parent_comment)
-    if request.method == 'POST':
+    if request.method == "POST":
         form = CommentForm(request.POST)
         if form.is_valid():
             with transaction.atomic():
@@ -91,33 +79,24 @@ def reply_comment(request, thread_slug, pk, comment=None):
                         sender=comment.user,
                         receiver=comment.parent.user,
                         comment=comment,
-                        notif_type=Notification.COMMENT_REPLIED
+                        notif_type=Notification.COMMENT_REPLIED,
                     )
             return HttpResponseRedirect(comment.get_precise_url())
 
     form_action = parent_comment.get_reply_form_action()
-    kwargs = {
-        'form': form, 
-        'form_action': form_action, 
-        'thread': comment.thread
-    }
+    kwargs = {"form": form, "form_action": form_action, "thread": comment.thread}
     return thread_detail(request, thread_slug, **kwargs)
 
 
 @login_required
 @comment_adder
 def like_comment(request, thread_slug=None, pk=None, comment=None):
-    if request.method == 'POST':
+    if request.method == "POST":
         likers_count, is_liker = comment.toggle_like(request.user)
         if request.is_ajax():
-            return JsonResponse(
-                {
-                    'likers_count': likers_count,
-                    'is_liker': is_liker               
-                }
-            )
+            return JsonResponse({"likers_count": likers_count, "is_liker": is_liker})
     return HttpResponseRedirect(comment.get_precise_url())
-    
+
 
 @login_required
 def report_comment(request, pk):

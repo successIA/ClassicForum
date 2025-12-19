@@ -10,13 +10,9 @@ class UserLastSeenMiddleware(object):
 
     def __call__(self, request):
         if request.user and request.user.is_authenticated:
-            User.objects.filter(pk=request.user.pk).update(
-                last_seen=timezone.now()
-            )
+            User.objects.filter(pk=request.user.pk).update(last_seen=timezone.now())
             notif_url, notif_count = Notification.objects.get_receiver_url_and_count(
                 request.user
             )
-            request.user.update_notification_info(
-                request, notif_url, notif_count
-            )
+            request.user.update_notification_info(request, notif_url, notif_count)
         return self.get_response(request)

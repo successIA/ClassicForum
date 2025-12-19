@@ -14,6 +14,7 @@ import os
 
 import dj_database_url
 import sentry_sdk
+
 from decouple import Csv, config
 from sentry_sdk.integrations.django import DjangoIntegration
 
@@ -96,7 +97,7 @@ TEMPLATES = [
             ],
             "libraries": {
                 "forum_template_tags": "forum.templatetags.forum_template_tags",
-                "moderation_template_tags": "forum.templatetags.moderation_template_tags",
+                "moderation_template_tags": "forum.templatetags.moderation_template_tags",  # noqa: E501
             },
         },
     },
@@ -129,7 +130,7 @@ DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
 AUTH_PASSWORD_VALIDATORS = [
     {
-        "NAME": "django.contrib.auth.password_validation.UserAttributeSimilarityValidator",
+        "NAME": "django.contrib.auth.password_validation.UserAttributeSimilarityValidator",  # noqa: E501
     },
     {
         "NAME": "django.contrib.auth.password_validation.MinimumLengthValidator",

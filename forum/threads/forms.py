@@ -1,5 +1,4 @@
 from django import forms
-from django.shortcuts import get_object_or_404
 
 from forum.categories.models import Category
 from forum.threads.models import Thread
@@ -7,17 +6,29 @@ from forum.threads.models import Thread
 
 class ThreadForm(forms.ModelForm):
     category = forms.ModelChoiceField(
-        queryset=Category.objects.all(), empty_label='Choose a category', label=''
+        queryset=Category.objects.all(), empty_label="Choose a category", label=""
     )
     title = forms.CharField(
-        widget=forms.TextInput(attrs={'placeholder': 'Title', }),
-        label=''
+        widget=forms.TextInput(
+            attrs={
+                "placeholder": "Title",
+            }
+        ),
+        label="",
     )
     message = forms.CharField(
-        widget=forms.Textarea(attrs={'placeholder': 'What are your thoughts?', }), 
-        label=''
+        widget=forms.Textarea(
+            attrs={
+                "placeholder": "What are your thoughts?",
+            }
+        ),
+        label="",
     )
 
     class Meta:
         model = Thread
-        fields = ['category', 'title', 'message', ]
+        fields = [
+            "category",
+            "title",
+            "message",
+        ]

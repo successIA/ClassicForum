@@ -1,11 +1,11 @@
 import os
 import shutil
+
 from datetime import timedelta
 
 from django.conf import settings
 from django.core.files.uploadedfile import SimpleUploadedFile
 from django.test import RequestFactory, override_settings
-from django.urls import reverse
 from django.utils import timezone
 
 from faker import Faker
@@ -16,22 +16,22 @@ from forum.attachments.models import Attachment
 
 fake = Faker()
 
-TEST_AVATARS_DIR = os.path.join(os.path.dirname(
-    os.path.abspath(__file__)), 'testavatars'
+TEST_AVATARS_DIR = os.path.join(
+    os.path.dirname(os.path.abspath(__file__)), "testavatars"
 )
-TEST_AVATAR_1 = os.path.join(TEST_AVATARS_DIR, 'aprf1.jpg')
+TEST_AVATAR_1 = os.path.join(TEST_AVATARS_DIR, "aprf1.jpg")
 
-AVATAR_UPLOAD_DIR = os.path.join(settings.TEST_MEDIA_ROOT, 'avatars')
+AVATAR_UPLOAD_DIR = os.path.join(settings.TEST_MEDIA_ROOT, "avatars")
 
 
 @override_settings(MEDIA_ROOT=settings.TEST_MEDIA_ROOT)
 class UserModelTest(TestCase):
     def setUp(self):
-        self.user = self.make_user('test_user1')
+        self.user = self.make_user("test_user1")
         self.test_avatar = SimpleUploadedFile(
-            name='aprf1.jpg',
-            content=open(TEST_AVATAR_1, 'rb').read(),
-            content_type='image/jpeg'
+            name="aprf1.jpg",
+            content=open(TEST_AVATAR_1, "rb").read(),
+            content_type="image/jpeg",
         )
 
     def tearDown(self):
@@ -50,27 +50,25 @@ class UserModelTest(TestCase):
         self.assertTrue(self.user.is_online())
 
     def test_is_online_with_below_10_minutes(self):
-        self.user.last_seen = timezone.now() - timedelta(seconds=10*60)
+        self.user.last_seen = timezone.now() - timedelta(seconds=10 * 60)
         self.assertFalse(self.user.is_online())
 
     def test_is_owner(self):
-        user = User.objects.get(username='test_user1')
+        user = User.objects.get(username="test_user1")
         self.assertTrue(self.user.is_owner(user))
 
     def test_not_owner(self):
-        second_user = self.make_user('testuser2')
+        second_user = self.make_user("testuser2")
         self.assertFalse(self.user.is_owner(second_user))
 
     def test_is_required_filter_with_owner(self):
-        user = User.objects.get(username='test_user1')
-        for filter_str in ['following', 'new']:
-            self.assertTrue(
-                self.user.is_required_filter_owner(user, filter_str)
-            )
+        user = User.objects.get(username="test_user1")
+        for filter_str in ["following", "new"]:
+            self.assertTrue(self.user.is_required_filter_owner(user, filter_str))
 
     def test_is_required_filter_with_not_owner(self):
-        second_user = self.make_user('testuser2')
-        for filter_str in ['following', 'new']:
+        second_user = self.make_user("testuser2")
+        for filter_str in ["following", "new"]:
             self.assertFalse(
                 self.user.is_required_filter_owner(second_user, filter_str)
             )
@@ -82,41 +80,41 @@ class UserModelTest(TestCase):
         self.assertEqual(self.user.get_avatar_url(), url)
 
     def test_get_avatar_url_without_avatar(self):
-        self.assertEqual(self.user.get_avatar_url(), '/static/img/avatar.svg')
+        self.assertEqual(self.user.get_avatar_url(), "/static/img/avatar.svg")
 
     def test_update_notification_info(self):
         request = RequestFactory()
         request.user = self.user
-        url = '/notification_url_example/'
+        url = "/notification_url_example/"
         count = 99
         self.user.update_notification_info(request, url, count)
         self.assertEqual(request.user.notif_url, url)
         self.assertEqual(request.user.notif_count, count)
 
     def test_toggle_followers_with_new_follower(self):
-        second_user = self.make_user('testuser2')
+        second_user = self.make_user("testuser2")
         self.user.toggle_followers(second_user)
         self.assertIn(second_user, self.user.followers.all())
         self.assertNotIn(self.user, second_user.followers.all())
 
     def test_toggle_followers_with_existing_follower(self):
-        second_user = self.make_user('testuser2')
+        second_user = self.make_user("testuser2")
         self.user.followers.add(second_user)
         self.user.toggle_followers(second_user)
         self.assertNotIn(second_user, self.user.followers.all())
 
     def test_get_absolute_url(self):
-        url = '/accounts/%s/' % self.user.username
+        url = "/accounts/%s/" % self.user.username
         self.assertEqual(self.user.get_absolute_url(), url)
 
     def test_get_user_follow_url(self):
-        url = '/accounts/%s/follow/' % self.user.username
+        url = "/accounts/%s/follow/" % self.user.username
         self.assertEqual(self.user.get_user_follow_url(), url)
 
     def test_get_userprofile_update_url(self):
-        url = '/accounts/%s/info/' % self.user.username
+        url = "/accounts/%s/info/" % self.user.username
         self.assertEqual(self.user.get_userprofile_update_url(), url)
 
     def test_get_login_url(self):
-        url = '/accounts/auth/login/'
+        url = "/accounts/auth/login/"
         self.assertEqual(self.user.get_login_url(), url)
