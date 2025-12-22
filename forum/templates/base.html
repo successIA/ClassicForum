@@ -10,9 +10,9 @@
   <meta http-equiv="X-UA-Compatible" content="ie=edge" />
   
   {% compress css %}
-    <link rel="stylesheet" href="{% static 'css/fontawesome/all.css' %}">
-    <link rel="stylesheet" href="{% static 'css/easymde.min.css' %}">
-    <link rel="stylesheet" href="{% static 'css/snackbarlight.css' %}">
+    <link rel="stylesheet" href="{% static 'vendor/css/fontawesome/all.css' %}">
+    <link rel="stylesheet" href="{% static 'vendor/css/easymde.min.css' %}">
+    <link rel="stylesheet" href="{% static 'vendor/css/snackbarlight.css' %}">
     <link rel="stylesheet" type="text/x-scss" href="{% static 'scss/styles.scss' %}" media="screen">
   {% endcompress %}
 
@@ -186,20 +186,20 @@
 
 
   {% compress js %}
-    <script src="{% static 'js/jquery-3.4.1.min.js' %}"></script>
-    <script src="{% static 'js/popper.min.js' %}"></script>
-    <script src="{% static 'js/bootstrap.min.js' %}"></script>
+    <script src="{% static 'vendor/js/jquery-3.4.1.min.js' %}"></script>
+    <script src="{% static 'vendor/js/popper.min.js' %}"></script>
+    <script src="{% static 'vendor/js/bootstrap.min.js' %}"></script>
     
-    <script src="{% static 'js/snackbarlight.js' %}"></script>
+    <script src="{% static 'vendor/js/snackbarlight.js' %}"></script>
   {% endcompress %}
 
   {% if request.user.is_authenticated and show_floating_btn %}
     {% compress js %}
-      <script src="{% static 'js/jquery-file-upload/vendor/jquery.ui.widget.js' %}"></script>
-      <script src="{% static 'js/jquery-file-upload/jquery.iframe-transport.js' %}"></script>
-      <script src="{% static 'js/jquery-file-upload/jquery.fileupload.js' %}"></script>
+      <script src="{% static 'vendor/js/jquery-file-upload/vendor/jquery.ui.widget.js' %}"></script>
+      <script src="{% static 'vendor/js/jquery-file-upload/jquery.iframe-transport.js' %}"></script>
+      <script src="{% static 'vendor/js/jquery-file-upload/jquery.fileupload.js' %}"></script>
     
-      <script src="{% static 'js/easymde.min.js' %}"></script>
+      <script src="{% static 'vendor/js/easymde.min.js' %}"></script>
       <script src="{% static 'js/easymde-custom.js' %}"></script>
       <script src="{% static 'js/jquery-file-upload-custom.js' %}"></script>
     {% endcompress %}
