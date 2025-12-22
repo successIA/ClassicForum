@@ -17,7 +17,7 @@
               <img src="{{ person.get_avatar_url }}" width="110" height="110" class="avatar">
             {% else %}
               <img src="{% static 'img/avatar.svg' %}" width="110" height="110" class="avatar">
-            {% endif %}            
+            {% endif %}
             <h5 class="mt-2"><a class="text-dark" href="{{ person.get_absolute_url }}">{{ person.username }}</a></h5>
 
             {% if request.user.is_authenticated %}
@@ -42,7 +42,7 @@
         </div>
       {% empty %}
         <div class="col-12 col-lg-8">
-          {% include "includes/empty_state_card.html" with icon="fas fa-user-friends" text="No followers yet" %}          
+          {% include "includes/empty_state_card.html" with icon="fas fa-user-friends" text="No followers yet" %}
         </div>
       {% endfor %}
     </div>

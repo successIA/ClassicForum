@@ -121,7 +121,7 @@ class ModeratorModelTest(TestCase):
     def test_can_hide_post_without_supermoderator_to_post(self):
         """A supermoderator cannot hide the post he/she is not moderating"""
         thread = make_only_thread(self.regular_user, self.category2)
-        comment = make_comment(self.regular_user, thread)
+        make_comment(self.regular_user, thread)
         self.assertFalse(self.supermoderator.can_hide_post(thread))
 
     def test_can_hide_post_with_invisible_post(self):

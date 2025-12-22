@@ -32,7 +32,10 @@ class ThreadListViewTest(ThreadsViewsTest):
         Thread.objects.all().delete()
         response = self.client.get(self.list_url)
         self.assertEqual(response.status_code, 200)
-        no_threads_str = "No Available threads at this moment. Start a new thread or check back later."
+        no_threads_str = (
+            "No Available threads at this moment. "
+            "Start a new thread or check back later."
+        )
         self.assertIn(no_threads_str, response.content.decode())
         self.assertEqual(response.context["form"], ThreadForm)
         # self.assertEqual(
@@ -192,7 +195,7 @@ class ThreadCreateViewTest(ThreadsViewsTest):
 
         response2 = self.client.post(self.create_url2, data)
         self.assertEqual(response2.status_code, 200)
-        form2 = response.context.get("form")
+        response.context.get("form")
         self.assertTrue(form.errors)
 
     def test_invalid_data_rejection(self):
@@ -231,7 +234,10 @@ class ThreadDetailViewTest(ThreadsViewsTest):
     def test_no_starting_comment(self):
         response = self.client.get(self.detail_url)
         self.assertEqual(response.status_code, 200)
-        report = "Something went wrong. Please try updating the thread if you were the author."
+        report = (
+            "Something went wrong. Please try updating the thread "
+            "if you were the author."
+        )
         self.assertIn(report, response.content.decode())
         self.assertEqual(response.context["thread"], self.thread)
 
@@ -269,8 +275,8 @@ class ThreadDetailViewTest(ThreadsViewsTest):
         self.assertEqual(response.status_code, 404)
 
     def test_view_should_not_render_hidden_comment_for_regular_user(self):
-        comment = make_comment(self.user, self.thread)
-        hidden_comment = make_comment(self.user, self.thread, visible=False)
+        make_comment(self.user, self.thread)  # visible comment
+        make_comment(self.user, self.thread, visible=False)  # hidden comment
         response = self.client.get(f"{self.detail_url}")
         self.assertEqual(len(response.context["comments"]), 1)
 

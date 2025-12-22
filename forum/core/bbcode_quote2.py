@@ -8,8 +8,8 @@ from markdown import markdown
 class BBCodeQuoteWithMarkdownParser:
     def __init__(self, text):
         self.text = text
-        self.open_tag_capture_regex = r'\[quote(\s*)?=(\s*")?(?P<username>[^\]\n]*?)(\s*,\s*)?([A-Za-z]+?)?(\s*:\s*)?(?P<id>\d+)?(\s*"\s*)?\]'
-        self.open_and_close_tag_regex = r"((\[quote(?![A-Za-z\n])(?:[^\]]*?)?\])(?![\s\S]*?\[quote(?![A-Za-z\n])(?:[^\]]*?)?\][\s\S]*?\[/quote\])([\s\S]*?)(\[/quote\]))"
+        self.open_tag_capture_regex = r'\[quote(\s*)?=(\s*")?(?P<username>[^\]\n]*?)(\s*,\s*)?([A-Za-z]+?)?(\s*:\s*)?(?P<id>\d+)?(\s*"\s*)?\]'  # noqa: E501
+        self.open_and_close_tag_regex = r"((\[quote(?![A-Za-z\n])(?:[^\]]*?)?\])(?![\s\S]*?\[quote(?![A-Za-z\n])(?:[^\]]*?)?\][\s\S]*?\[/quote\])([\s\S]*?)(\[/quote\]))"  # noqa: E501
         self.comment_pk_set = set()
         self.text_comment_qs = list()
 
@@ -77,7 +77,7 @@ class BBCodeQuoteWithMarkdownParser:
                     int(comment_id_str), username
                 )
                 if comment:
-                    return f'<aside class="quote"><blockquote><div class="title"><a href="{comment.get_precise_url()}">{username}</a> said:</div>{marked_text}</blockquote></aside>'
+                    return f'<aside class="quote"><blockquote><div class="title"><a href="{comment.get_precise_url()}">{username}</a> said:</div>{marked_text}</blockquote></aside>'  # noqa: E501
             except ValueError:
                 pass
         return f'<aside class="quote"><blockquote>{marked_text}</blockquote></aside>'

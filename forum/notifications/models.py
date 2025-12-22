@@ -113,7 +113,6 @@ class Notification(TimeStampedModel):
         super(Notification, self).save(*args, **kwargs)
 
     def _validate_fields_or_error(self):
-        error = None
         if self.thread and self.comment:
             raise FieldError(
                 "Notification cannot have both comment field and thread field set."

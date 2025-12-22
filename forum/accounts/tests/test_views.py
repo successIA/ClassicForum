@@ -134,7 +134,6 @@ class UserProfileEditTest(TestCase):
         """
         Only comment owner can see the comment edit form and update comment
         """
-        redirect_url = "%s?next=%s" % (reverse("accounts:login"), self.user_edit_url)
         second_user = self.make_user("testuser2")
         login(self, second_user.username, "password")
         get_response = self.client.get(self.user_edit_url)
@@ -396,9 +395,9 @@ class UserFollowersTest(TestCase):
 
 class UserMentionTest(TestCase):
     def test_render(self):
-        user1 = self.make_user("testuser1")
-        user2 = self.make_user("testuser2")
-        user3 = self.make_user("odd_testuser3")
+        self.make_user("testuser1")
+        self.make_user("testuser2")
+        self.make_user("odd_testuser3")
         start_with = "te"
         url = reverse("accounts:user_mention")
         response = self.client.get(url + "?username=" + start_with)
@@ -419,10 +418,10 @@ class UserMentionTest(TestCase):
 
 class UserMentionListTest(TestCase):
     def test_render(self):
-        user1 = self.make_user("testuser1")
-        user2 = self.make_user("testuser2")
-        user3 = self.make_user("testuser3")
-        username_list = '[{"username": "testuser1"}, {"username": "testuser2"}, {"username": "testuser3"}]'
+        self.make_user("testuser1")
+        self.make_user("testuser2")
+        self.make_user("testuser3")
+        username_list = '[{"username": "testuser1"}, {"username": "testuser2"}, {"username": "testuser3"}]'  # noqa: E501
         url = reverse("accounts:user_mention_list")
         response = self.client.get(url + "?username_list=" + username_list)
         self.assertEqual(response.status_code, 200)

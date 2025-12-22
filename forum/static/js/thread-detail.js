@@ -11,11 +11,11 @@ $(document).ready(function() {
         $followBtn.attr('disabled', true).css('cursor', 'not-allowed')
         $toggle = $followBtn.find('.toggle');
 
-        var switchTextTo = $toggle.text().trim() === 'Follow' ? 
-          'Following' : 
-          $toggle.text().trim() === 'Following' ? 
-          'Follow' : 
-          'Following';           
+        var switchTextTo = $toggle.text().trim() === 'Follow' ?
+          'Following' :
+          $toggle.text().trim() === 'Following' ?
+          'Follow' :
+          'Following';
 
         $.ajax({
           method: 'POST',
@@ -25,11 +25,11 @@ $(document).ready(function() {
           success: function(data) {
             var followersCount = parseInt(data.followers_count)
             if (isNaN(followersCount)) {
-              alert('Something went wrong');              
-            } else {              
+              alert('Something went wrong');
+            } else {
               $toggle.find('.js-thread-follow-btn-text').text(switchTextTo)
               var count = followersCount === 0 ? '' : followersCount;
-              $followBtn.find('.count').text(count);              
+              $followBtn.find('.count').text(count);
             }
             $followBtn.attr('disabled', false).css('cursor', 'pointer');
           },
@@ -39,7 +39,7 @@ $(document).ready(function() {
             $followBtn.attr('disabled', false).css('cursor', 'pointer')
           }
         });
-      });  
+      });
     }
   }
   ThreadFollow.init();

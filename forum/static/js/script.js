@@ -39,7 +39,7 @@ $(document).ready(function() {
   $(".nav-container")
     .last()
     .attr(
-      "style", 
+      "style",
       "box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);"
     )
 
@@ -130,7 +130,7 @@ $(document).ready(function() {
       }
       this.$searchBar.removeClass('search-bar-show')
     },
-    
+
     showSideSearchBar: function() {
       this.$aroundSearchBar.addClass('search-bar-hide')
       this.$searchBar.addClass('search-bar-show')
@@ -152,7 +152,7 @@ $(document).ready(function() {
         self.$aroundSearchBar = $('.around-search-bar');
         self.$searchBar = $('.search-bar');
         self.$searchInput = self.$searchBar.find('input');
-        self.showSideSearchBar();  
+        self.showSideSearchBar();
         self.bindCloseEvent();
         self.bindResizeEvent();
       })
@@ -248,7 +248,7 @@ $(document).ready(function() {
 
     init: function() {
       if (!this.$listItemCardLink[0]) return;
-      this.bindClickEvent();  
+      this.bindClickEvent();
     },
 
     bindClickEvent: function() {

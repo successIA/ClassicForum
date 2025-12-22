@@ -11,7 +11,7 @@ var easyMDE = new EasyMDE({
     spellChecker: false,
     showIcons: ["code" /* , "upload-image" */]
   });
-  
+
   var ConfirmEditor = {
     hasChanged: false,
     isFormSubmitting: false,
@@ -27,10 +27,10 @@ var easyMDE = new EasyMDE({
         self.isFormSubmitting = true;
       });
     },
-  
+
     bindConfirmPageEvent: function() {
       var self = ConfirmEditor;
-      
+
       easyMDE.codemirror.on("change", function(){
         self.hasChanged = true;
       });
@@ -56,19 +56,19 @@ var easyMDE = new EasyMDE({
       };
     }
   };
-  
+
   window.onload = ConfirmEditor.init();
-  
+
   // Change image icon in the editor toolbar to upload icon
   // $('.upload-image').find('i').attr('class', 'fa fa-upload')
-  
+
   var BBCodeQuoteRenderer = {
     // rOpenTagWithCapture: /\[quote(\s*)?=(\s*")?(?<username>[^\]\n]*?)(\s*,\s*)?(\w+?)?(\s*:\s*)?(?<id>\d+)?(\s*"\s*)?\][\s]*?[\n]/g,
     rOpenTagWithCapture: /\[quote(\s*)?=(\s*")?([^\]\n]*?)(\s*,\s*)?(\w+?)?(\s*:\s*)?(\d+)?(\s*"\s*)?\]/g,
-  
+
     // rOpenAndCloseTag: /((\[quote(?![A-Za-z\n])(?:[^\]]*?)?\][\s]*?[\n])(?![\s\S]*?\[quote(?![A-Za-z\n])(?:[^\]]*?)?\][\s]*?[\n][\s\S]*?\[\/quote\][\s]*?[\n])([\s\S]*?)(\[\/quote\][\s]*?[\n]))/g,
     rOpenAndCloseTag: /((\[quote(?![A-Za-z\n])(?:[^\]]*?)?\])(?![\s\S]*?\[quote(?![A-Za-z\n])(?:[^\]]*?)?\][\s\S]*?\[\/quote\])([\s\S]*?)(\[\/quote\]))/g,
-  
+
     render: function(plainText) {
       plainText = this.replaceMatchWithHtmlBlockquote(plainText);
       var strippedPlainTextWithBlockquote = this.stripOutUnwantedNewLineChars(
@@ -77,7 +77,7 @@ var easyMDE = new EasyMDE({
       console.log(strippedPlainTextWithBlockquote);
       return easyMDE.markdown(strippedPlainTextWithBlockquote);
     },
-  
+
     replaceMatchWithHtmlBlockquote: function(plainText) {
       if (!plainText) return plainText;
       var self = this,
@@ -91,10 +91,10 @@ var easyMDE = new EasyMDE({
       ) {
         matchFound = true;
         var result = self.rOpenTagWithCapture.exec(openTag);
-  
+
         // Used to reset regex.exec.
         self.rOpenTagWithCapture.lastIndex = 0;
-  
+
         if (result && result.length) {
           var username = result[3],
             id = result[7];
@@ -114,18 +114,18 @@ var easyMDE = new EasyMDE({
           );
         }
       });
-  
+
       console.log(matchFound);
       if (matchFound) return self.replaceMatchWithHtmlBlockquote(replacedText);
       return replacedText;
     },
-  
+
     stripOutUnwantedNewLineChars: function(plainText) {
       if (!plainText) return plainText;
       var rThreeNewLineChars = /(\n){3,}/g,
         rLeadingNewLineChars = /(\n){1,}<aside class="quote"><blockquote>/g,
         rTrailingNewLineChars = /<\/blockquote><\/aside>(\n){1,}/g;
-  
+
       strippedText = plainText
         .replace(rThreeNewLineChars, "\n\n")
         .replace(rLeadingNewLineChars, '<aside class="quote"><blockquote>')
@@ -133,27 +133,27 @@ var easyMDE = new EasyMDE({
       return strippedText;
     }
   };
-  
+
   var MentionRenderer = {
     shouldFetchEnteredMentionObjList: false,
     allMentionsRegex: /@([\w]+)/g,
     atKeyCombo: null,
-  
+
     init: function() {
       this.registerTextPasteEvent();
       this.registerAtKeyPressedEvent();
       this.registeChangeEvent();
     },
-  
+
     render: function(plainText) {
       console.log("renderall");
-  
+
       // The Preview grabs the raw text from the editor.
       // We still need to re-render the mentions here.
       var renderedMentionText = MentionRenderer.addLinkToAllValidMentions();
       return renderedMentionText;
     },
-  
+
     renderPreviewWithLinkedMentions: function() {
       // This is used to forcefully change the text in the preview
       // any time mentions have been added to the MentionLab's
@@ -164,7 +164,7 @@ var easyMDE = new EasyMDE({
       var previewHtml = BBCodeQuoteRenderer.render(linkedMentions);
       $(".editor-preview").html(previewHtml);
     },
-  
+
     registeChangeEvent: function() {
       var self = this;
       easyMDE.codemirror.on("change", function(instance, changeObj) {
@@ -180,14 +180,14 @@ var easyMDE = new EasyMDE({
         }
       });
     },
-  
+
     onFetchSuccess: function(fetchedMentionObjList) {
       if (fetchedMentionObjList && fetchedMentionObjList.length) {
         MentionObjLab.addMentionObjList(fetchedMentionObjList);
         MentionRenderer.renderPreviewWithLinkedMentions();
       }
     },
-  
+
     getUniqueAndNewMentionsInEditor: function() {
       mentionList = easyMDE.value().match(this.allMentionsRegex);
       if (!mentionList) return [];
@@ -200,7 +200,7 @@ var easyMDE = new EasyMDE({
       newUsernameList = this.getOnlyNewUsernameList(uniqueMentionList);
       return newUsernameList;
     },
-  
+
     getOnlyNewUsernameList: function(mentionList) {
       var uniqueUsernameList = [];
       for (var i = 0; i < mentionList.length; i++) {
@@ -211,7 +211,7 @@ var easyMDE = new EasyMDE({
       }
       return uniqueUsernameList;
     },
-  
+
     registerTextPasteEvent: function() {
       var self = this;
       easyMDE.codemirror.on("paste", function(instance, event) {
@@ -222,7 +222,7 @@ var easyMDE = new EasyMDE({
         self.setShouldFetchEnteredMentionObjList(true);
       });
     },
-  
+
     registerAtKeyPressedEvent: function() {
       var self = this;
       easyMDE.codemirror.on("keydown", function(instance, event) {
@@ -238,11 +238,11 @@ var easyMDE = new EasyMDE({
         }
       });
     },
-  
+
     setShouldFetchEnteredMentionObjList: function(flag) {
       this.shouldFetchEnteredMentionObjList = flag;
     },
-  
+
     addLinkToAllValidMentions: function() {
       textWithLinkedMentons = easyMDE
         .value()
@@ -257,22 +257,22 @@ var easyMDE = new EasyMDE({
           }
           return match;
         });
-  
+
       return textWithLinkedMentons;
     }
   };
-  
+
   MentionRenderer.init();
-  
+
   var MentionObjLab = {
     mentionObjList: [],
-  
+
     addMentionObj: function(mentionObj) {
       if (mentionObj && mentionObj.username && mentionObj.profileURL) {
         this.mentionObjList.push(mentionObj);
       }
     },
-  
+
     addMentionObjList: function(mentionObjList) {
       var self = this;
       mentionObjList.forEach(function(mentionObj) {
@@ -289,7 +289,7 @@ var easyMDE = new EasyMDE({
         }
       });
     },
-  
+
     fetchMentionObjListInEditor: function(usernameList, onSuccess) {
       if (!usernameList.length) return;
       $.ajax({
@@ -301,11 +301,11 @@ var easyMDE = new EasyMDE({
         }
       });
     },
-  
+
     getMentionObjList: function() {
       return this.mentionObjList;
     },
-  
+
     getProfileURLByUsername(username) {
       for (var i = 0; i < this.mentionObjList.length; i++) {
         if (username === this.mentionObjList[i].username) {
@@ -314,7 +314,7 @@ var easyMDE = new EasyMDE({
       }
       return null;
     },
-  
+
     isMentionObjPresent: function(mentionObj) {
       for (var i = 0; i < this.mentionObjList.length; i++) {
         if (mentionObj.username === this.mentionObjList[i].username) {
@@ -324,7 +324,7 @@ var easyMDE = new EasyMDE({
       return false;
     }
   };
-  
+
   var MentionDropdown = {
     pattern: /@([\w]+)$/gm,
     startWith: "",
@@ -335,7 +335,7 @@ var easyMDE = new EasyMDE({
     // $dropdown: $('.mention-dropdown-wrapper'),
     dropdownItemSelector: ".username-item",
     activeDropdownItemSelector: ".item-active",
-  
+
     init: function() {
       this.$dropdown.css("display", "none");
       this.registerMentionTrigger();
@@ -343,32 +343,32 @@ var easyMDE = new EasyMDE({
       this.registerKeyEvent();
       this.registerEditorBlurEvent();
     },
-  
+
     registerFrameChangeEvent: function() {
       self = this;
       self.codemirror.on("refresh", function(instance) {
         self.updateDropDownParameters();
         self.postionDropDown();
       });
-  
+
       $(window).resize(function() {
         self.updateDropDownParameters();
         self.postionDropDown();
       });
-  
+
       $(window).scroll(function() {
         self.updateDropDownParameters();
         self.postionDropDown();
       });
     },
-  
+
     registerKeyEvent: function() {
       var self = this;
       self.codemirror.on("keydown", function(instance, event) {
         var code = event.keyCode || event.which;
         var display = self.$dropdown.css("display");
         if (display !== "block") return;
-  
+
         switch (code) {
           case 13:
             event.preventDefault();
@@ -385,7 +385,7 @@ var easyMDE = new EasyMDE({
         }
       });
     },
-  
+
     onEnterKeyPressed: function() {
       var $activeDropdownItem = $(this.activeDropdownItemSelector);
       if ($activeDropdownItem) {
@@ -395,13 +395,13 @@ var easyMDE = new EasyMDE({
         return false;
       }
     },
-  
+
     onUpKeyPressed: function() {
       var self = this;
       var $dropdownItem = $(self.dropdownItemSelector);
       var activeClass = self.activeDropdownItemSelector.replace(".", "");
       var $activeItem = self.$dropdown.find(self.activeDropdownItemSelector);
-  
+
       if ($activeItem.index() > 0) {
         $activeItem.toggleClass(activeClass);
         $activeItem.prev().toggleClass(activeClass);
@@ -412,13 +412,13 @@ var easyMDE = new EasyMDE({
         return false;
       }
     },
-  
+
     onDownKeyPressed: function() {
       var self = this;
       var $dropdownItem = $(self.dropdownItemSelector);
       var activeClass = self.activeDropdownItemSelector.replace(".", "");
       var $activeItem = self.$dropdown.find(self.activeDropdownItemSelector);
-  
+
       if ($activeItem.index() < $dropdownItem.length - 1) {
         $activeItem.toggleClass(activeClass);
         $activeItem.next().toggleClass(activeClass);
@@ -429,7 +429,7 @@ var easyMDE = new EasyMDE({
         return false;
       }
     },
-  
+
     registerMentionTrigger: function() {
       var self = this;
       self.codemirror.on("change", function(instance, changeObj) {
@@ -442,7 +442,7 @@ var easyMDE = new EasyMDE({
         }
       });
     },
-  
+
     onFetchMentionObjListSuccess: function(mentionObjList) {
       if (mentionObjList && mentionObjList.length) {
         self.$dropdown.css("display", "block");
@@ -451,7 +451,7 @@ var easyMDE = new EasyMDE({
         self.$dropdown.css("display", "none");
       }
     },
-  
+
     updateDropDownParameters: function() {
       text = this.getTextBeforeCurPos();
       result = this.getMentionMatch(text);
@@ -462,7 +462,7 @@ var easyMDE = new EasyMDE({
         this.setStartWith("");
       }
     },
-  
+
     registerEditorBlurEvent: function() {
       var self = this;
       $(document).click(function(e) {
@@ -474,14 +474,14 @@ var easyMDE = new EasyMDE({
         }
       });
     },
-  
+
     getTextBeforeCurPos: function() {
       cursor = this.codemirror.getCursor();
       var currentLine = this.codemirror.getLine(cursor.line);
       var textBeforeCursorPos = currentLine.substring(0, cursor.ch);
       return textBeforeCursorPos;
     },
-  
+
     getMentionMatch: function(textBeforeCursorPos) {
       // this.pattern.exec() may produce inconsitent results.
       // It is more suitable to always used newly declared local
@@ -494,11 +494,11 @@ var easyMDE = new EasyMDE({
       }
       return null;
     },
-  
+
     setStartWith: function(startWith) {
       this.startWith = startWith;
     },
-  
+
     setAtCharLeft: function(index) {
       cursor = this.codemirror.getCursor();
       this.atCharLeft = this.codemirror.cursorCoords(
@@ -506,7 +506,7 @@ var easyMDE = new EasyMDE({
         "window"
       ).left;
     },
-  
+
     fetchMentionObjList: function(onSuccess) {
       if (!this.startWith) return;
       $.ajax({
@@ -518,7 +518,7 @@ var easyMDE = new EasyMDE({
         }
       });
     },
-  
+
     setDropdown: function(newMentionList) {
       var self = this;
       self.mentionList = newMentionList;
@@ -526,7 +526,7 @@ var easyMDE = new EasyMDE({
       newMentionList.forEach(function(mention) {
         self.appendDropdownItem(mention);
       });
-  
+
       activeClass = self.activeDropdownItemSelector.replace(".", "");
       $(self.dropdownItemSelector)
         .eq(0)
@@ -534,12 +534,12 @@ var easyMDE = new EasyMDE({
       self.postionDropDown();
       self.registerDropdownItemClickEvent();
     },
-  
+
     appendDropdownItem: function(mention) {
       var startWithRegex = new RegExp(String(this.startWith), "i"),
         strongStartWithHtml = "<strong>" + this.startWith + "</strong>",
         text = mention["username"].replace(startWithRegex, strongStartWithHtml);
-  
+
       var dropdownItem =
         '<li class="username-item"><a href="' +
         mention["profile_url"] +
@@ -549,10 +549,10 @@ var easyMDE = new EasyMDE({
         '"><span>' +
         text +
         "</span></a></li>";
-  
+
       this.$dropdown.append(dropdownItem);
     },
-  
+
     registerDropdownItemClickEvent: function() {
       var self = this;
       $(self.dropdownItemSelector).on("click", function(e) {
@@ -564,25 +564,25 @@ var easyMDE = new EasyMDE({
         self.onMentionItemClicked(username, href);
       });
     },
-  
+
     postionDropDown: function() {
       if (!this.mentionList) return;
       // Dropdown should appear above the current cursor position.
       var top = this.codemirror.cursorCoords().top - this.$dropdown.height() - 3;
       var windowTop = this.codemirror.cursorCoords(true, "window").top;
-  
+
       // If the dropdown has crossed the window re-adjust it
       // to appear below the curren position
       if (this.$dropdown.height() > windowTop) {
         top = this.codemirror.cursorCoords().top + 20;
       }
-  
+
       this.$dropdown.css({
         left: this.atCharLeft + 10.5,
         top: top
       });
     },
-  
+
     onMentionItemClicked: function(username, profileURL) {
       if (!username || !profileURL) return;
       cursor = this.codemirror.getCursor();
@@ -599,14 +599,13 @@ var easyMDE = new EasyMDE({
       this.codemirror.focus();
     }
   };
-  
+
   MentionDropdown.init();
-  
+
   // $('.btn-primary').on('click', function(e) {
   //     e.preventDefault()
   //     console.log('click')
   //     console.log(JSON.parse(JSON.stringify(editor.value())))
   //     // console.log(JSON.parse(editor.codemirror.getValue()))
-  
+
   // })
-  

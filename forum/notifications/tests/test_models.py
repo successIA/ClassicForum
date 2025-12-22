@@ -75,17 +75,6 @@ class NotificationModelTest(TestCase):
         response_string = notification.get_description()
         self.assertIn("started a new thread", response_string)
 
-    def test_get_description_for_thread_create(self):
-        notification = Notification(
-            sender=self.sender,
-            receiver=self.receiver,
-            thread=self.thread,
-            notif_type=Notification.THREAD_CREATED,
-            created=timezone.now(),
-        )
-        response_string = notification.get_description()
-        self.assertIn("started a new thread", response_string)
-
     def test_get_description_for_thread_update(self):
         notification = Notification(
             sender=self.sender,
@@ -249,7 +238,7 @@ class NotificationQuerySetManagerTest(TestCase):
         self.assertTrue(notif3.unread)
 
     def test_get_receiver_url_and_count(self):
-        notif1 = Notification.objects.create(
+        Notification.objects.create(  # notif1
             sender=self.sender,
             receiver=self.receiver,
             comment=self.comment,
@@ -262,7 +251,7 @@ class NotificationQuerySetManagerTest(TestCase):
             thread=self.thread,
             notif_type=Notification.THREAD_UPDATED,
         )
-        notif3 = Notification.objects.create(
+        Notification.objects.create(  # notif3
             sender=self.sender,
             receiver=self.receiver,
             thread=self.thread,

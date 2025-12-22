@@ -1,7 +1,7 @@
 {% if category_list %}
-  {% for category in category_list %}    
+  {% for category in category_list %}
     {% if current_category == category %}
-      <div class="sidebar-item">     
+      <div class="sidebar-item">
         <a href="{% url 'categories:category_detail' category.slug %}"
           class="icon-row nav-link sidebar-item--active text-primary">
           <i class="{{ category.icon }} icon-row__icon mr-3"></i><span>{{ category.title }}</span>
@@ -12,7 +12,7 @@
         <a href="{% url 'categories:category_detail' category.slug %}" class="nav-link text-muted">
           <i class="{{ category.icon }} icon-row__icon mr-3"></i><span>{{ category.title }}</span>
         </a>
-      </div>      
+      </div>
     {% endif %}
   {% endfor %}
 {% else %}

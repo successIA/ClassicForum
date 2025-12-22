@@ -40,7 +40,7 @@ def find_mentioned_usernames(message):
 
 def create_hit_count(request, instance):
     hit_count = HitCount.objects.get_for_object(instance)
-    hit_count_response = HitCountMixin.hit_count(request, hit_count)
+    HitCountMixin.hit_count(request, hit_count)
 
 
 def get_paginated_queryset(queryset, PER_PAGE, page_num):

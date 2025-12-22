@@ -12,7 +12,7 @@
 </div>
 
 <div class="position-relative mt-3 user-search-wrapper">
-  <input type="text" name="user" value="{% if moderator %}{{ moderator.user.username }}{% endif %}{{ form.user.value|default:"" }}" 
+  <input type="text" name="user" value="{% if moderator %}{{ moderator.user.username }}{% endif %}{{ form.user.value|default:"" }}"
     class="form-control" id="user-search-input" placeholder="Enter username">
   <ul style="display: none; z-index: 10;" class="list-group position-absolute shadow-sm" id="user-search-dropdown">
   </ul>
@@ -23,5 +23,5 @@
         <p class="mb-1"><strong>{{ error|escape }}</strong></p>
     {% endfor %}
     </div>
-  {% endif %}  
+  {% endif %}
 </div>

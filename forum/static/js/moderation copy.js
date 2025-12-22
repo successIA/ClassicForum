@@ -18,8 +18,8 @@ $(document).ready(function() {
 
       bindSearchUserEvent: function() {
         var self = this;
-        self.$input.on('keyup', function(e) {    
-          self.value = $(this).val();          
+        self.$input.on('keyup', function(e) {
+          self.value = $(this).val();
           self.performSearch(e);
         });
 
@@ -30,7 +30,7 @@ $(document).ready(function() {
           self.justLoaded = false;
         }
       },
-      
+
       onJustLoaded: function($current) {
         this.justLoaded = false
         this.setUserDetail($current);
@@ -38,10 +38,10 @@ $(document).ready(function() {
 
       performSearch: function(e) {
         var self = this;
-        if (self.canSearch(e)) {            
+        if (self.canSearch(e)) {
           self.hideUserDetail();
           self.fetchUsers(self.showDropdown);
-          self.prevValue = self.value;          
+          self.prevValue = self.value;
         } else {
           if ( !self.value.length && self.isDropdownShown ) {
             self.hideDropdown();
@@ -54,25 +54,25 @@ $(document).ready(function() {
           var code = event.keyCode || event.which;
           if (code === 13 || code === 38 || code === 40) {
             return false;
-          }        
+          }
         }
         if (!this.value.length) {
-          // The previous value will be equal to current value when 
+          // The previous value will be equal to current value when
           // the user types in a recently cleared last character.
           // To avoid we have to reset the prevValue.
-          this.prevValue = ""  
+          this.prevValue = ""
           return false;
-        } 
+        }
         if (this.value === this.prevValue) {
           return false;
-        } 
+        }
         return true;
       },
 
       hideUserDetail: function() {
-        var $userDetail = $('#user-detail');  
-        if ( $userDetail && 
-            $userDetail.find('.username-wrapper').text() 
+        var $userDetail = $('#user-detail');
+        if ( $userDetail &&
+            $userDetail.find('.username-wrapper').text()
             !== this.$input.val() ) {
               $userDetail.css("display", "none");
         }
@@ -98,9 +98,9 @@ $(document).ready(function() {
           var startWith = startWithRegex.exec(user.username)[0];
           var strongStartWith = "<strong>" + startWith + "</strong>",
               text = user.username.replace(startWithRegex, strongStartWith);
-          list += '<li style="cursor: pointer" class="list-group-item user-item" data-url="' + 
-                    user.profile_url + 
-                    '">' + 
+          list += '<li style="cursor: pointer" class="list-group-item user-item" data-url="' +
+                    user.profile_url +
+                    '">' +
                     '<img src="' +
                      user.avatar_url +
                      '" width="30" height="30" class="avatar mr-2"/>' +
@@ -110,22 +110,22 @@ $(document).ready(function() {
         return list
       },
 
-      
-      showDropdown: function(data) { 
-        // This is a callback function, the 'this' 
+
+      showDropdown: function(data) {
+        // This is a callback function, the 'this'
         // keyword will not work here
         var self = Moderation
         self.$dropdown = $('#user-search-dropdown');
 
-        var userList = self.buildList(data["user_list"]);        
-    
+        var userList = self.buildList(data["user_list"]);
+
         if (userList.length) {
           self.$dropdown.show().html(userList);
 
           var $current = self.$dropdown.find('li').eq(0);
           $current.addClass(self.itemActiveCls);
 
-          
+
           self.isDropdownShown = true;
           self.bindDropdownItemClickEvent();
           self.bindDropdownBlurEvent();
@@ -136,14 +136,14 @@ $(document).ready(function() {
           }
         } else {
           self.hideDropdown();
-        }        
+        }
       },
 
       hideDropdown: function() {
         this.$dropdown.hide();
         self.isDropdownShown = false;
         this.$dropdown.html("");
-        this.value = "";              
+        this.value = "";
       },
 
       bindDropdownItemClickEvent: function() {
@@ -151,7 +151,7 @@ $(document).ready(function() {
         var $items = self.$dropdown.find('.user-item')
         $items.off().on('click', function() {
           if (!self.isDropdownShown) return;
-          self.setUserDetail($(this));          
+          self.setUserDetail($(this));
           self.$input.blur();
           self.$searchWrapper.hide();
         });
@@ -160,7 +160,7 @@ $(document).ready(function() {
       setUserDetail: function($chosenItem, shouldHide) {
         if (!$chosenItem) return;
         var $userDetail = $('#user-detail');
-          
+
         $userDetail.css("display", "flex");
 
         $userDetail
@@ -168,14 +168,14 @@ $(document).ready(function() {
           .attr('href', $chosenItem.data("url"));
 
         var src = $chosenItem.find('img').attr('src');
-        
+
         $userDetail.find('img').show().attr('src', src);
 
         var username = $chosenItem.text();
         $userDetail.find('.username-wrapper').text(username);
         this.$input.val(username);
         // $chosenItem.addClass(this.itemActiveCls);
-  
+
         shouldHide = shouldHide === undefined ? true : false;
         if (shouldHide) {
           this.hideDropdown();
@@ -232,12 +232,12 @@ $(document).ready(function() {
           }
         });
       },
-    
 
-      bindEnterKeyPressedEvent: function() {  
+
+      bindEnterKeyPressedEvent: function() {
         var activeSelector = '.' + this.itemActiveCls
         var $activeItem = this.$dropdown.find(activeSelector);
-        
+
         if ($activeItem) {
           this.setUserDetail($activeItem);
           this.$input.blur();
@@ -265,14 +265,14 @@ $(document).ready(function() {
           var $first = $dropdownItems.eq(0);
           $first.toggleClass(this.itemActiveCls);
           this.setUserDetail($first, false);
-        }        
+        }
       },
 
       bindUpArrowEvent: function() {
         var activeSelector = '.' + this.itemActiveCls
         var $activeItem = this.$dropdown.find(activeSelector);
         $dropdownItems = this.$dropdown.find('.user-item')
-    
+
         if ($activeItem.index() > 0) {
           $activeItem.toggleClass(this.itemActiveCls);
           var $prev = $activeItem.prev();
@@ -283,7 +283,7 @@ $(document).ready(function() {
           $dropdownItems
             .eq($dropdownItems.length - 1)
             .toggleClass(this.itemActiveCls);
-          
+
           var $last = $dropdownItems
                         .eq($dropdownItems.length - 1)
           $last.toggleClass(this.itemActiveCls);
@@ -292,6 +292,6 @@ $(document).ready(function() {
       },
 
     }
-  
+
   Moderation.init();
 })

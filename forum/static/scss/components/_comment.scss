@@ -1,10 +1,10 @@
 // COMMENT CARD
 .comment {
   &--username {
-    color: inherit; 
+    color: inherit;
     text-decoration: none;
   }
-  
+
   &__time {
     position: relative;
     font-size: 0.95rem;
@@ -26,7 +26,7 @@
     right: 0.2rem;
     padding: 0.2rem 0.3rem;
   }
-  
+
   &__footer {
     margin: auto -.945rem -.3rem -.575em;
 
@@ -82,7 +82,7 @@
       margin-top: 1rem;
       margin-bottom: 1rem;
     }
-    ul { 
+    ul {
       list-style-type: disc;
     }
   }
@@ -90,9 +90,9 @@
 
 // COMMENT HISTORY
 .comment-history {
-  ul { 
+  ul {
     list-style-type: disc;
-  } 
+  }
   img {
     max-width: 100%;
     border-radius: 4px;

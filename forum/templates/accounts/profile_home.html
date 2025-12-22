@@ -9,7 +9,7 @@
     <div class="container ">
       <div class="row offset-lg-1">
         <div class="col-7 col-lg-7 col-xl-8 mt-4">
-          {# Mobile #}  
+          {# Mobile #}
           <img src="{{ userprofile.get_avatar_url }}" height="90" width="90" class="mr-3 d-md-none avatar" alt="..." />{# Mobile #}
 
           {# Destop #}
@@ -28,16 +28,16 @@
               Edit profile
             </a>
           {% endif %}
-              
+
           {% if request.user.is_authenticated and request.user != userprofile %}
             <form method="post" action="{{ userprofile.get_user_follow_url }}">
-              {% csrf_token %}              
+              {% csrf_token %}
               <button
                 type="submit"
-                data-action="{{ userprofile.get_user_follow_url }}" 
+                data-action="{{ userprofile.get_user_follow_url }}"
                 class="mt-2 font-weight-bold btn js-user-follow-btn
                 {% if request.user in userprofile.followers.all %}
-                  btn-outline-primary 
+                  btn-outline-primary
                 {% else %}
                   btn-primary
                 {% endif %}"
@@ -82,7 +82,7 @@
         <div class="col-12 col-lg-8">
           <h5>Recent Posts</h5>
           <hr>
-          {% include 'accounts/includes/profile_home_recent_posts.html' with userprofile=userprofile recent_comments=recent_comments recent_threads=recent_threads %}         
+          {% include 'accounts/includes/profile_home_recent_posts.html' with userprofile=userprofile recent_comments=recent_comments recent_threads=recent_threads %}
         </div>
       </div>
   </main>

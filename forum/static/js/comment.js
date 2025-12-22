@@ -9,21 +9,21 @@ $(document).ready(function() {
         e.preventDefault();
         $likeBtn = $(this);
         $likeBtn.attr('disabled', true).css('cursor', 'not-allowed')
-                          
+
         $.ajax({
           method: 'POST',
           url: $likeBtn.data('action'),
           data: {'csrfmiddlewaretoken': csrftoken},
-          
+
           success: function(data) {
             var likers_count = parseInt(data.likers_count)
             if (isNaN(likers_count)) {
-              alert('Something went wrong');              
+              alert('Something went wrong');
             } else {
-              var count = likers_count === 0 ? '' : likers_count;              
+              var count = likers_count === 0 ? '' : likers_count;
               $likeBtn.find('.js-btn-like-text').text(count);
 
-              if (data.is_liker) 
+              if (data.is_liker)
                 $likeBtn.removeClass('text-muted').addClass('text-primary');
               else
                 $likeBtn.removeClass('text-primary').addClass('text-muted');
@@ -36,7 +36,7 @@ $(document).ready(function() {
             $likeBtn.attr('disabled', false).css('cursor', 'pointer')
           }
         });
-      });  
+      });
     }
   }
   CommentLike.init();
@@ -74,7 +74,7 @@ $(document).ready(function() {
         e.preventDefault();
         $followLink = $(this);
         $followLink.attr('disabled', true).css('cursor', 'not-allowed')
-      
+
         $.ajax({
           method: 'POST',
           url: $followLink.data('action'),
@@ -95,12 +95,12 @@ $(document).ready(function() {
             }
             $followLink.attr('disabled', false).css('cursor', 'pointer');
           },
-          
+
           error: function() {
             alert("Something went wrong");
           }
         });
-      });  
+      });
     }
   }
   UserFollowLink.init();

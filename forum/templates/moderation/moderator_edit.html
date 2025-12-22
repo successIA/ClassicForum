@@ -27,7 +27,7 @@
               <form method="post" autocomplete="off" novalidate class="moderator-edit-form">
                 {% csrf_token %}
                 {% if moderator %}
-                  {% include 'moderation/includes/user_detail.html' with moderator=moderator %}                  
+                  {% include 'moderation/includes/user_detail.html' with moderator=moderator %}
                 {% else %}
                   {% include 'moderation/includes/user_auto_suggest.html' %}
                 {% endif %}
@@ -51,18 +51,18 @@
                         <tr>
                           <td>
                             <div class="custom-control custom-checkbox">
-                              <input type="checkbox" name="categories" value={{ value }} class="custom-control-input" 
+                              <input type="checkbox" name="categories" value={{ value }} class="custom-control-input"
                                 id="customCheck{{forloop.counter}}"
                                 {% if prev_cats and category in prev_cats %}
                                   checked="checked"
                                 {% endif %}>
-                              <label class="custom-control-label" for="customCheck{{forloop.counter}}">{{ label }} 
+                              <label class="custom-control-label" for="customCheck{{forloop.counter}}">{{ label }}
                               </label>
                             </div>
                           </td>
                           <td>
                             <div class="d-flex flex-column">
-                              {% for mod in category.get_moderators %}                              
+                              {% for mod in category.get_moderators %}
                                 <div class="d-flex align-items-center rounded bg-light mb-1 p-2">
                                   <img src="{{ mod.user.get_avatar_url }}" class="avatar mr-1" width="25" height="25" />
                                   <a class="text-dark" href="{{ mod.user.get_absolute_url }}">{{mod.user.username}}</a>
@@ -88,7 +88,7 @@
               </form>
             </div>
           </div>
-        </div>           
+        </div>
       </div>
     </div>
   </main>

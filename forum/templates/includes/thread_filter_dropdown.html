@@ -1,5 +1,5 @@
 <a class="filter dropdown-toggle text-dark" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" href="#">
-  <span 
+  <span
     class="{% if current_thread_filter in filter_dropdown_list_item_keys %}
             {% for key, value in filter_dropdown_list %}
               {% if key == current_thread_filter %}
@@ -28,7 +28,7 @@
     </a>
   {% endfor %}
 </div>
-<span class="thick-baseline 
+<span class="thick-baseline
         {% for key, value in filter_dropdown_list %}{% if key == current_thread_filter %}thread-active{% endif %}{% endfor %}
       "
 >

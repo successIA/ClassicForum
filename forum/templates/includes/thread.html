@@ -3,7 +3,7 @@
 {% load forum_template_tags %}
 {% load humanize %}
 
-<div class="media">  
+<div class="media">
   <img src="{{ thread.user.get_avatar_url }}" height="60" width="60" class="avatar mr-3 d-none d-md-block" alt="..." />
   <div class="media-body">
     <h5 class="mt-0 mb-0">
@@ -11,7 +11,7 @@
         {{ thread.title }}
       </a>
     </h5>
-    
+
     <div>
       {% if not category %}
         <span class=" d-inline-block mb-1 badge badge-light text-muted font-weight-bold py-1">

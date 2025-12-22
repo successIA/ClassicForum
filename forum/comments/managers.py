@@ -57,7 +57,7 @@ class CommentQuerySet(models.query.QuerySet):
         comment_qs = None
         try:
             comment_qs = self.filter(pk=int(pk))
-        except:
+        except Exception:
             return None
         if comment_qs:
             return comment_qs[0]

@@ -5,9 +5,9 @@
   <form style="margin-top: 0.2em;" action="{{ form_action }}"  method="post"
     enctype="multipart/form-data" novalidate>
     {% csrf_token %}
-    
+
     <input type='hidden' name='thread_slug' value="{{ thread.slug }}" />
-    
+
     {{ form|crispy }}
 
     {% if debug %}
@@ -15,7 +15,7 @@
         <i class="fa fa-cloud-upload-alt mr-1"></i>UPLOAD IMAGE
       </button>
     {% endif %}
-    
+
     <input id="realFileChooser" type="file" name="image" style="display: none;" data-url="{% url 'attachments:upload_img' %}"
       data-form-data='{"csrfmiddlewaretoken": "{{ csrf_token }}"}'>
 

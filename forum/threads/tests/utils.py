@@ -55,7 +55,6 @@ def make_only_thread(user, category, count=1, visible=True):
     from forum.threads.models import Thread
 
     if count > 1:
-        thread_list = []
         for _ in range(count):
             Thread.objects.create(
                 title=fake.sentence(),

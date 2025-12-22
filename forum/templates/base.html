@@ -8,7 +8,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta http-equiv="X-UA-Compatible" content="ie=edge" />
-  
+
   {% compress css %}
     <link rel="stylesheet" href="{% static 'vendor/css/fontawesome/all.css' %}">
     <link rel="stylesheet" href="{% static 'vendor/css/easymde.min.css' %}">
@@ -17,7 +17,7 @@
   {% endcompress %}
 
   {% block stylesheet %}{% endblock stylesheet %}
-  
+
   <title>
     {% block title %}
       ClassicForum
@@ -25,7 +25,7 @@
   </title>
 </head>
 
-<body>  
+<body>
   {% block sidebar_overlay %}
     <div class="sidebar-overlay"></div>
   {% endblock sidebar_overlay %}
@@ -35,7 +35,7 @@
       <div class="bg-light" id="sidebar-wrapper">
         <div class="sidebar-heading font-weight-bold">
           <span class="d-inline-block d-md-none" id="close-sidebar">&times;</span>
-          <a class="navbar-brand" href="/">            
+          <a class="navbar-brand" href="/">
             <span>ClassicForum</span>
           </a>
         </div>
@@ -76,8 +76,8 @@
             </a>
           </div>
 
-          <form 
-            action="{% url 'search:search' %}" 
+          <form
+            action="{% url 'search:search' %}"
             class="search-bar form-inline my-0 my-lg-0 justify-content-end d-none ml-3 ml-md-0 d-md-flex mr-lg-auto"
           >
             <div class="position-relative d-flex align-items-center">
@@ -86,7 +86,7 @@
               <ul class="list-group nav__search-filter-box js-search-filter-box" style="display: none;">
                 <li class="list-group-item">
                   <div class="custom-control custom-radio d-flex justify-content-start">
-                    <input type="radio" id="thread" name="search_filter" value="thread" class="custom-control-input" {% if is_comment is None %}checked{% endif %}> 
+                    <input type="radio" id="thread" name="search_filter" value="thread" class="custom-control-input" {% if is_comment is None %}checked{% endif %}>
                     <label class="custom-control-label text-dark font-weight-bold" for="thread">Threads</label>
                   </div>
                 </li>
@@ -101,7 +101,7 @@
             </div>
           </form>
 
-          <div class="around-search-bar">            
+          <div class="around-search-bar">
             <div class="d-flex justify-content-end align-items-center">
               {% if request.user.is_authenticated %}
                 <span class="d-inline-block d-md-none mr-4 text-dark">
@@ -126,7 +126,7 @@
                     aria-expanded="false" href="#">
                     <img src="{{ request.user.get_avatar_url }}" height="38" width="38" class="avatar mr-1 mr-md-2 avatar" alt="..." />
                   </a>
-                  <div style="min-width: 11.5rem;" class="dropdown-menu dropdown-menu-right py-0 px-0 shadow-sm dropdown-hover-fix"> 
+                  <div style="min-width: 11.5rem;" class="dropdown-menu dropdown-menu-right py-0 px-0 shadow-sm dropdown-hover-fix">
                     <a class="dropdown-item py-2 pl-1 icon-row" href="{{ user.get_absolute_url }}">
                       <i class="icon-row__icon mx-2 text-secondary far fa-user-circle mr-2"></i><span class="icon-row--text">My Account</span>
                     </a>
@@ -154,7 +154,7 @@
                     </a>
                   </div>
                 </div>
-              {% else %}                
+              {% else %}
                 <div class="d-md-flex justify-content-end align-items-center">
                   {# Search icon small screen #}
                   <span class="d-inline-block d-md-none mr-3 text-white"><i class="fas fa-search search-icon"></i></span>
@@ -171,12 +171,12 @@
         </nav>
       {% endblock navigation %}
 
-      {% block content %}{% endblock content %}        
+      {% block content %}{% endblock content %}
     </div>
   </div>
 
   {% if show_floating_btn %}
-    <a href="{{login_redirect_url}}" style="display: flex; text-decoration: none;" 
+    <a href="{{login_redirect_url}}" style="display: flex; text-decoration: none;"
       class="rounded-circle bg-primary add-thread-btn floating-action-btn align-items-center justify-content-center text-white">
       <i class="fas fa-pen"></i>
     </a>
@@ -189,7 +189,7 @@
     <script src="{% static 'vendor/js/jquery-3.4.1.min.js' %}"></script>
     <script src="{% static 'vendor/js/popper.min.js' %}"></script>
     <script src="{% static 'vendor/js/bootstrap.min.js' %}"></script>
-    
+
     <script src="{% static 'vendor/js/snackbarlight.js' %}"></script>
   {% endcompress %}
 
@@ -198,7 +198,7 @@
       <script src="{% static 'vendor/js/jquery-file-upload/vendor/jquery.ui.widget.js' %}"></script>
       <script src="{% static 'vendor/js/jquery-file-upload/jquery.iframe-transport.js' %}"></script>
       <script src="{% static 'vendor/js/jquery-file-upload/jquery.fileupload.js' %}"></script>
-    
+
       <script src="{% static 'vendor/js/easymde.min.js' %}"></script>
       <script src="{% static 'js/easymde-custom.js' %}"></script>
       <script src="{% static 'js/jquery-file-upload-custom.js' %}"></script>

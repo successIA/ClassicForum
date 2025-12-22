@@ -13,7 +13,7 @@
           </li>
 				{% endif %}
 
-				{% for i in page_obj.paginator.page_range %}          
+				{% for i in page_obj.paginator.page_range %}
 					{% if i == page_obj.paginator.num_pages and page_obj.number >= 10 %}
 						{% if page_obj.paginator.num_pages > page_obj.number|add:'3' or page_obj.paginator.number < page_obj.number|add:'-3' %}
 							<li class="page-item disabled">

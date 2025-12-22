@@ -41,7 +41,7 @@ $(document).ready(function() {
         e.preventDefault();
         $followBtn = $(this);
         $followBtn.attr('disabled', true).css('cursor', 'not-allowed')
-      
+
         $.ajax({
           method: 'POST',
           url: $followBtn.data('action'),
@@ -66,19 +66,19 @@ $(document).ready(function() {
             }
             $followBtn.attr('disabled', false).css('cursor', 'pointer');
           },
-          
+
           error: function() {
             alert("Something went wrong")
             $followBtn.attr('disabled', false).css('cursor', 'pointer')
           }
         });
-      });  
+      });
     }
   }
   UserFollow.init();
 
   var ConfirmProfileSettings = {
-    hasChanged: false, 
+    hasChanged: false,
     isFormSubmitting: false,
 
     init: function() {
@@ -107,7 +107,7 @@ $(document).ready(function() {
       ).keydown(function() {
         self.hasChanged = true;
       });
-      
+
       window.onbeforeunload = function(e) {
         var image = !!($("#id_image").length) && $("#id_image").val();
         var gender = !!($("#id_gender").length) && $("#id_gender").val();

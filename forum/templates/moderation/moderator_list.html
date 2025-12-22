@@ -17,7 +17,7 @@
                 <i class="fas fa-plus mr-2"></i>Add Moderator
               </a>
             </div>
-            <ul class="list-group mb-4">            
+            <ul class="list-group mb-4">
               {% if moderators %}
                 <div class="table-responsive moderators-table-box">
                   <table class="table">
@@ -29,8 +29,8 @@
                         <th scope="col"></th>
                       </tr>
                     </thead>
-                    <tbody>                  
-                    {% for moderator in moderators %}     
+                    <tbody>
+                    {% for moderator in moderators %}
                       {% with moderator.user.username as username %}
                         <tr>
                           <td>
@@ -45,7 +45,7 @@
                               {% endif %}
                               <a href="{{ category.get_absolute_url }}" target="_blank" rel="noopener noreferrer">
                                 <b class="text-secondary">{{ category.title }}<b>
-                              </a>                            
+                              </a>
                             {% endfor %}
                           </td>
                           <td>
@@ -84,7 +84,7 @@
                             </a>
                           </td>
                         </tr>
-                      {% endwith %}          
+                      {% endwith %}
                     {% endfor %}
                     </tbody>
                   </table>
@@ -97,11 +97,11 @@
                       <p style="font-size: 1.4rem; margin-bottom: 0.5rem;">No moderators yet</p>
                     </div>
                   </div>
-                </div> 
-              {% endif %}              
+                </div>
+              {% endif %}
             </ul>
           </div>
-          
+
         </div>
       </div>
     </div>

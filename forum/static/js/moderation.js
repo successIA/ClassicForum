@@ -265,7 +265,7 @@ $(document).ready(function() {
 
       if ($activeItem.index() > 0) {
         $activeItem.toggleClass(this.itemActiveCls);
-        
+
         var $prev = $activeItem.prev();
         $prev.toggleClass(this.itemActiveCls);
         this.setUserDetail($prev, false);

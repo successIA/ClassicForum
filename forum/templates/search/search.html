@@ -17,7 +17,7 @@
             <div class="col-12">
               <h4 class="mb-3">
                 Search results for <b class="text-secondary">{{ query }}</b>
-              </h4>   
+              </h4>
             </div>
           {% else %}
             <div class="col-12">
@@ -29,7 +29,7 @@
               </h4>
             </div>
           {% endif %}
-          
+
           <div class="col-12 col-lg-8 search-result-box">
             <ul class="list-group mb-4 comment-list-group">
             {% if is_comment %}
@@ -41,7 +41,7 @@
                   <div class="comment-message">
                     {{ comment.marked_message|safe }}
                   </div>
-                </li>                    
+                </li>
               {% endfor %}
             {% else %}
               {% for thread in results %}
@@ -52,16 +52,16 @@
                   <div class="comment-message">
                     {{ thread.starting_comment.marked_message|safe }}
                   </div>
-                </li>                    
+                </li>
               {% endfor %}
             {% endif %}
             </ul>
           </div>
         {% else %}
           <div class="col-12 col-lg-8 mt-4">
-            {% include "includes/empty_state_card.html" with icon="fas fa-info-circle" text="Please enter a query in the search box" font_size="small" %}       
+            {% include "includes/empty_state_card.html" with icon="fas fa-info-circle" text="Please enter a query in the search box" font_size="small" %}
           </div>
-        {% endif %}  
+        {% endif %}
       </div>
 
       <div class="row mt-3">

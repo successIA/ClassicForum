@@ -22,8 +22,8 @@
           {% include "includes/comment.html" with comment=comment %}
         </li>
       {% empty %}
-        {% include "includes/empty_state_card.html" with icon="far fa-comments" text="No comments yet" %}       
-      {% endfor %}                
+        {% include "includes/empty_state_card.html" with icon="far fa-comments" text="No comments yet" %}
+      {% endfor %}
     </ul>
   </div>
 
@@ -35,7 +35,7 @@
         </li>
       {% empty %}
         {% empty_thread_description "me" as description %}
-        {% include "includes/empty_state_card.html" with icon="fas fa-book" text=description %}       
+        {% include "includes/empty_state_card.html" with icon="fas fa-book" text=description %}
       {% endfor %}
     </ul>
   </div>

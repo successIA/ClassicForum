@@ -4,7 +4,7 @@ $(document).ready(function () {
         $customImageChooser: $("#customFileChooser"),
         $progressBarWrapper: null,
         $attachmentMenu: null,
-        
+
         init: function() {
             this.bindUploadEvent();
             this.bindUploadBtnEvent();
@@ -17,21 +17,21 @@ $(document).ready(function () {
             self.$realImageChooser.fileupload({
                 replaceFileInput: false,
                 dataType: 'json',
-                sequentialUploads: true,  
-                dropZone: $('#div_id_message'), 
+                sequentialUploads: true,
+                dropZone: $('#div_id_message'),
                 add: function(e, data) {
                     self.onAdd(e, data)
-                },            
-                start: function (e) {  
+                },
+                start: function (e) {
                     self.onStart(e);
-                },            
+                },
                 progressall: function (e, data) {
                     self.onProgressall(e, data);
                 },
                 stop: function (e) {
                     self.onStop(e);
                 },
-                done: function (e, data) { 
+                done: function (e, data) {
                     self.onDone(e, data);
                 },
                 fail: function (e, data) {
@@ -44,7 +44,7 @@ $(document).ready(function () {
             var self = this;
             self.$customImageChooser.click(function () {
                 self.$realImageChooser.click();
-            });          
+            });
         },
 
         bindInsertBtnEvent: function() {
@@ -97,7 +97,7 @@ $(document).ready(function () {
         onStop: function(e) {
             this.$progressBarWrapper.hide();
         },
-        
+
         isImagePresent: function(url) {
             var isPresent = false;
             this.$attachmentMenu.find('img').each(function() {
@@ -116,11 +116,11 @@ $(document).ready(function () {
                 $firstItem.find('img').attr('src', data.result.url)
                 $firstItem.find('button').attr('data-src', markdownImgTag)
             } else {
-                $firstItem.clone(true).appendTo(this.$attachmentMenu)   
-                $lastItem = $('.attachment-menu-item:last-child')             
+                $firstItem.clone(true).appendTo(this.$attachmentMenu)
+                $lastItem = $('.attachment-menu-item:last-child')
                 $lastItem.find('img').attr('src', data.result.url)
-                $lastItem.find('button').attr('data-src', markdownImgTag)   
-                $lastItem.find('.remove-url-btn').css('display', 'none')         
+                $lastItem.find('button').attr('data-src', markdownImgTag)
+                $lastItem.find('.remove-url-btn').css('display', 'none')
             }
         },
 
@@ -136,7 +136,7 @@ $(document).ready(function () {
                 }
             } else {
                 alert("Something went wrong");
-            }   
+            }
         },
 
         onFail: function (e, data) {
@@ -145,6 +145,6 @@ $(document).ready(function () {
     }
     CustomFileUpload.init();
     window.CustomFileUpload = CustomFileUpload
-        
+
     // };
   });
