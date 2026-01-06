@@ -1,5 +1,5 @@
 # ClassicForum
-https://classicforum.herokuapp.com
+https://classicforum-830a728c9897.herokuapp.com
 
 A discussion forum that serves as a medium for users to create topics, reply to topics and comments, view comment change history and upload images etcetera. With a moderation system that provides a way to convert specific users to moderators.
 
