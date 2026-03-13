@@ -161,6 +161,6 @@ def follow_thread(request, thread_slug, thread=None):
     if request.method == "POST":
         ThreadFollowership.objects.toggle(request.user, thread)
         followers_count = thread.followers.count()
-        if request.is_ajax():
+        if request.headers.get("x-requested-with") == "XMLHttpRequest":
             return JsonResponse({"followers_count": followers_count})
     return redirect(thread.get_absolute_url())

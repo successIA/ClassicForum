@@ -204,7 +204,7 @@ def follow_user(request, username):
         if user == follower:
             raise Http404
         is_follower = user.toggle_followers(follower)
-        if request.is_ajax():
+        if request.headers.get("x-requested-with") == "XMLHttpRequest":
             return JsonResponse({"is_follower": is_follower})
     return redirect(user.get_absolute_url())
 

@@ -93,7 +93,7 @@ def reply_comment(request, thread_slug, pk, comment=None):
 def like_comment(request, thread_slug=None, pk=None, comment=None):
     if request.method == "POST":
         likers_count, is_liker = comment.toggle_like(request.user)
-        if request.is_ajax():
+        if request.headers.get("x-requested-with") == "XMLHttpRequest":
             return JsonResponse({"likers_count": likers_count, "is_liker": is_liker})
     return HttpResponseRedirect(comment.get_precise_url())
 
