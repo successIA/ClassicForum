@@ -8,6 +8,7 @@ repos:
       - id: check-yaml
       - id: end-of-file-fixer
         exclude_types: [svg]
+        exclude: requirements\.txt #FIXME: To avoid adding gibberish to the requirements.txt file
       - id: trailing-whitespace
         exclude_types: [svg]
   - repo: https://github.com/astral-sh/ruff-pre-commit

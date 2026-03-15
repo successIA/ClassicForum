@@ -1,9 +1,11 @@
 # ClassicForum
+
 https://classicforum-830a728c9897.herokuapp.com
 
 A discussion forum that serves as a medium for users to create topics, reply to topics and comments, view comment change history and upload images etcetera. With a moderation system that provides a way to convert specific users to moderators.
 
 ## Key Features
+
 - Image upload
 - In-app notification
 - Quote reply
@@ -16,9 +18,11 @@ A discussion forum that serves as a medium for users to create topics, reply to 
 ![Thread Page](https://github.com/successIA/Forum/blob/master/screenshots/screenshot2.png?raw=true)
 
 ## Requirement
-- python == 3.9
+
+- python == 3.12
 
 ## Installation
+
 ```shell
 python3 -m venv venv
 source venv/bin/activate

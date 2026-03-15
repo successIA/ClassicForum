@@ -48,6 +48,7 @@ INSTALLED_APPS = [
     "django.forms",
     # THIRD PARTY APPS
     "crispy_forms",
+    "crispy_bootstrap4",
     "debug_toolbar",
     "compressor",
     "django_extensions",
@@ -156,13 +157,13 @@ USE_I18N = True
 USE_TZ = True
 
 # Sentry Integration
-sentry_sdk.init(
-    dsn=config("SENTRY_DSN", ""),
-    integrations=[DjangoIntegration()],
-    # If you wish to associate users to errors (assuming you are using
-    # django.contrib.auth) you may enable sending PII data.
-    send_default_pii=True,
-)
+SENTRY_DSN = config("SENTRY_DSN", "")
+if SENTRY_DSN:
+    sentry_sdk.init(
+        dsn=SENTRY_DSN,
+        integrations=[DjangoIntegration()],
+        send_default_pii=True,
+    )
 
 AUTH_USER_MODEL = "accounts.User"
 LOGIN_URL = "/accounts/auth/login/"
@@ -183,8 +184,16 @@ STATICFILES_DIRS = (os.path.join(BASE_DIR, "forum", "static"),)
 
 STATIC_ROOT = os.path.join(BASE_DIR, "staticfiles")
 
-# https://warehouse.python.org/project/whitenoise/
-STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
+
+STORAGES = {
+    "default": {
+        "BACKEND": "django.core.files.storage.FileSystemStorage",
+    },
+    "staticfiles": {
+        # https://warehouse.python.org/project/whitenoise/
+        "BACKEND": "whitenoise.storage.CompressedManifestStaticFilesStorage",
+    },
+}
 
 COMPRESS_STORAGE = "compressor.storage.GzipCompressorFileStorage"
 COMPRESS_PRECOMPILERS = (("text/x-scss", "django_libsass.SassCompiler"),)

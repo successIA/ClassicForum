@@ -1,7 +1,6 @@
 from django import forms
 from django.contrib.auth import get_user_model
 from django.forms import models
-from django.forms.fields import MultipleChoiceField
 
 from ..categories.models import Category
 from .models import Moderator
@@ -22,7 +21,10 @@ class AdvancedModelChoiceField(models.ModelMultipleChoiceField):
             return self._choices
         return AdvancedModelChoiceIterator(self)
 
-    choices = property(_get_choices, MultipleChoiceField._set_choices)
+    def _set_choices(self, value):
+        self._choices = value
+
+    choices = property(_get_choices, _set_choices)
 
 
 class ModeratorForm(forms.Form):
