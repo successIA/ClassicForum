@@ -4,14 +4,15 @@ from django.db import models
 from django.db.models import F
 from django.urls import reverse
 
-from hitcount.models import HitCount, HitCountMixin
+from hitcount.mixins import HitCountModelMixin
+from hitcount.models import HitCount
 
 from forum.core.constants import COMMENT_PER_PAGE
 from forum.core.models import TimeStampedModel
 from forum.threads.managers import ThreadQuerySet
 
 
-class Thread(TimeStampedModel, HitCountMixin):
+class Thread(TimeStampedModel, HitCountModelMixin):
     title = models.CharField(max_length=150)
     slug = models.SlugField(blank=True, max_length=255)
     body = models.TextField(max_length=4000)

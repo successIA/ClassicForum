@@ -49,11 +49,11 @@ class ModeratorModelTest(TestCase):
     def test_get_hidden_posts(self):
         thread = make_only_thread(self.user, self.category)
         hidden_posts = self.moderator.get_hidden_posts(thread)
-        self.assertQuerysetEqual(self.moderator.hidden_threads.all(), hidden_posts)
+        self.assertQuerySetEqual(self.moderator.hidden_threads.all(), hidden_posts)
 
         comment = make_comment(self.user, thread)
         hidden_posts = self.moderator.get_hidden_posts(comment)
-        self.assertQuerysetEqual(self.moderator.hidden_comments.all(), hidden_posts)
+        self.assertQuerySetEqual(self.moderator.hidden_comments.all(), hidden_posts)
 
         msg = "post has to be an instance either Thread or Comment"
         with self.assertRaisesMessage(TypeError, msg):

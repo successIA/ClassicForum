@@ -4,11 +4,9 @@ import string
 
 from django.conf import settings
 from django.core.paginator import EmptyPage, PageNotAnInteger, Paginator
-from django.utils.html import mark_safe
 
+from hitcount.mixins import HitCountViewMixin
 from hitcount.models import HitCount
-from hitcount.views import HitCountMixin
-from markdown import markdown
 
 
 def get_random_string():
@@ -16,12 +14,6 @@ def get_random_string():
         [random.choice(string.ascii_lowercase + string.digits) for i in range(10)]
     )
     return s.lower()
-
-
-def find_images_in_message(message):
-    img_regex = r'<img(?:.+?)src="(?P<src>.+?)"(?:.*?)>'
-    message = mark_safe(markdown(message, safe_mode="escape"))
-    return re.findall(img_regex, message)
 
 
 def convert_mention_to_link(message, user_value_list):
@@ -40,7 +32,7 @@ def find_mentioned_usernames(message):
 
 def create_hit_count(request, instance):
     hit_count = HitCount.objects.get_for_object(instance)
-    HitCountMixin.hit_count(request, hit_count)
+    HitCountViewMixin.hit_count(request, hit_count)
 
 
 def get_paginated_queryset(queryset, PER_PAGE, page_num):
