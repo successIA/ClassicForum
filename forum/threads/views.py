@@ -3,9 +3,8 @@ from django.db import transaction
 from django.http import HttpResponseRedirect, JsonResponse
 from django.shortcuts import redirect, render
 from django.urls import reverse
+from django.views.decorators.http import require_POST
 
-from forum.categories.models import Category
-from forum.categories.views import category_detail
 from forum.comments.forms import CommentForm
 from forum.comments.models import Comment
 from forum.comments.utils import create_comment_revision, perform_comment_save
@@ -52,37 +51,31 @@ def thread_list(request, filter_str=None, page=1, form=None):
     return render(request, "home.html", ctx)
 
 
+@require_POST
 @login_required
+@transaction.atomic
 def create_thread(request, slug=None, filter_str=None, page=None):
-    form = ThreadForm
-    if request.method == "POST":
-        form = ThreadForm(request.POST)
-        if form.is_valid():
-            thread = form.save(commit=False)
-            thread.user = request.user
-            thread.category = form.cleaned_data.get("category")
-            with transaction.atomic():
-                thread.save()
-                comment = Comment(
-                    message=form.cleaned_data.get("message"),
-                    category=form.cleaned_data.get("category"),
-                    thread=thread,
-                    user=thread.user,
-                    is_starting_comment=True,
-                )
-                perform_comment_save(comment)
-                thread.set_starting_comment(comment)
-                perform_thread_post_create_actions(thread)
-            return redirect(f"{thread.get_absolute_url()}#")
-
-    category_list = list(Category.objects.filter(slug=slug))
-    if category_list:
-        category = category_list[0]
-        if request.method == "GET":
-            form = ThreadForm(initial={"category": category})
-        return category_detail(request, category.slug, filter_str, page, form)
-    else:
+    form = ThreadForm(request.POST)
+    if not form.is_valid():
         return thread_list(request, filter_str, page, form)
+
+    thread = form.save(commit=False)
+    thread.user = request.user
+    thread.category = form.cleaned_data.get("category")
+    thread.save()
+
+    comment = Comment(
+        message=form.cleaned_data.get("message"),
+        category=thread.category,
+        thread=thread,
+        user=thread.user,
+        is_starting_comment=True,
+    )
+    perform_comment_save(comment)
+    thread.set_starting_comment(comment)
+    perform_thread_post_create_actions(thread)
+
+    return redirect(f"{thread.get_absolute_url()}#")
 
 
 @thread_adder

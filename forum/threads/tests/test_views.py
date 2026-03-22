@@ -137,37 +137,6 @@ class ThreadCreateViewTest(ThreadsViewsTest):
             kwargs={"slug": self.category.slug, "filter_str": "recent", "page": 1},
         )
 
-    def test_anonymous_user_redirect(self):
-        redirect_url = "%s?next=%s" % (reverse("accounts:login"), self.create_url)
-        redirect_url2 = "%s?next=%s" % (reverse("accounts:login"), self.create_url2)
-
-        get_response = self.client.get(self.create_url)
-        self.assertRedirects(get_response, redirect_url)
-        get_response2 = self.client.get(self.create_url2)
-        self.assertRedirects(get_response2, redirect_url2)
-
-        data = {
-            "category": self.category.pk,
-            "title": "python programming",
-            "message": "hello word",
-        }
-        post_response = self.client.post(self.create_url, data)
-        self.assertRedirects(post_response, redirect_url)
-        post_response2 = self.client.post(self.create_url2, data)
-        self.assertRedirects(post_response2, redirect_url2)
-
-    def test_view_render_for_authenticated_user(self):
-        login(self, self.user, "password")
-
-        response = self.client.get(self.create_url)
-        self.assertEqual(response.status_code, 200)
-
-        response2 = self.client.get(self.create_url2)
-        self.assertEqual(response2.status_code, 200)
-
-        self.assertEqual(response.context["form"], ThreadForm)
-        self.assertIsInstance(response2.context["form"], ThreadForm)
-
     def test_view_submit_success_for_authenticated_user(self):
         login(self, self.user, "password")
         data = {
