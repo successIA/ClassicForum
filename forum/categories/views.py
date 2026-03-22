@@ -1,4 +1,5 @@
 from django.shortcuts import get_object_or_404, render
+from django.urls import reverse
 
 from forum.categories.models import Category
 from forum.core.constants import THREAD_PER_PAGE
@@ -20,6 +21,9 @@ def category_detail(request, slug, filter_str=None, page=1, form=None):
     filter_str, filtered_qs = get_filtered_threads_for_page(
         request, filter_str, thread_qs
     )
+    form_action = reverse(
+        "threads:thread_create", kwargs={"filter_str": filter_str, "page": page}
+    )
     thread_paginator = get_paginated_queryset(filtered_qs, THREAD_PER_PAGE, page)
     category_url = category.get_precise_url(filter_str, page)
     base_url = [f"/categories/{category.slug}/{filter_str}/", "/"]
@@ -32,7 +36,7 @@ def category_detail(request, slug, filter_str=None, page=1, form=None):
         "base_url": base_url,
         "show_floating_btn": True,
         "login_redirect_url": get_post_login_redirect_url(category_url),
-        "form_action": category.get_thread_form_action(filter_str, page),
+        "form_action": f"{form_action}#post-form",  # post-form",
     }
     add_pagination_context(base_url, ctx, thread_paginator)
     return render(request, "categories/category_detail.html", ctx)

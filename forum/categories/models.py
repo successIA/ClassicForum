@@ -52,12 +52,3 @@ class Category(TimeStampedModel):
             "categories:category_detail_filter",
             kwargs={"slug": self.slug, "filter_str": filter_str, "page": page},
         )
-
-    def get_thread_create_url(self):
-        return reverse("thread_create", kwargs={"slug": self.slug})
-
-    def get_thread_form_action(self, filter_str, page):
-        return "%s#post-form" % reverse(
-            "categories:category_thread_create",
-            kwargs={"slug": self.slug, "filter_str": filter_str, "page": page},
-        )

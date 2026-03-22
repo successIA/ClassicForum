@@ -54,8 +54,9 @@ def thread_list(request, filter_str=None, page=1, form=None):
 @require_POST
 @login_required
 @transaction.atomic
-def create_thread(request, slug=None, filter_str=None, page=None):
+def create_thread(request, filter_str=None, page=None):
     form = ThreadForm(request.POST)
+
     if not form.is_valid():
         return thread_list(request, filter_str, page, form)
 

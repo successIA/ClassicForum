@@ -48,8 +48,8 @@ class CategoryDetailView(CategoryViewTest):
             response.context["base_url"], ["/categories/progromming-group/recent/", "/"]
         )
         form_action = "%s#post-form" % reverse(
-            "categories:category_thread_create",
-            kwargs={"slug": self.category.slug, "filter_str": "recent", "page": 1},
+            "threads:thread_create",
+            kwargs={"filter_str": "recent", "page": 1},
         )
         self.assertEqual(response.context["form_action"], form_action)
 

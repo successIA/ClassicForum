@@ -132,10 +132,6 @@ class ThreadCreateViewTest(ThreadsViewsTest):
             "threads:thread_create",
             kwargs={"filter_str": "recent", "page": 1},
         )
-        self.create_url2 = reverse(
-            "categories:category_thread_create",
-            kwargs={"slug": self.category.slug, "filter_str": "recent", "page": 1},
-        )
 
     def test_view_submit_success_for_authenticated_user(self):
         login(self, self.user, "password")
@@ -148,9 +144,6 @@ class ThreadCreateViewTest(ThreadsViewsTest):
         response = self.client.post(self.create_url, data)
         self.assertEqual(response.status_code, 302)
 
-        response2 = self.client.post(self.create_url2, data)
-        self.assertEqual(response2.status_code, 302)
-
         self.assertTrue(Thread.objects.exists())
 
     def test_empty_data_rejection(self):
@@ -160,11 +153,6 @@ class ThreadCreateViewTest(ThreadsViewsTest):
         response = self.client.post(self.create_url, data)
         self.assertEqual(response.status_code, 200)
         form = response.context.get("form")
-        self.assertTrue(form.errors)
-
-        response2 = self.client.post(self.create_url2, data)
-        self.assertEqual(response2.status_code, 200)
-        response.context.get("form")
         self.assertTrue(form.errors)
 
     def test_invalid_data_rejection(self):
@@ -179,11 +167,6 @@ class ThreadCreateViewTest(ThreadsViewsTest):
         self.assertEqual(response.status_code, 200)
         form = response.context.get("form")
         self.assertTrue(form.errors)
-
-        response2 = self.client.post(self.create_url2, data)
-        self.assertEqual(response2.status_code, 200)
-        form2 = response.context.get("form")
-        self.assertTrue(form2.errors)
 
 
 class ThreadDetailViewTest(ThreadsViewsTest):
