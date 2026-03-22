@@ -1,4 +1,4 @@
-from django.urls import path, re_path
+from django.urls import path
 
 from .views import (
     create_moderator,
@@ -16,23 +16,19 @@ app_name = "moderation"
 
 urlpatterns = [
     path("add/", create_moderator, name="moderator_create"),
-    re_path(
-        r"^(?P<username>[\w-]+)/detail/$", moderator_detail, name="moderator_detail"
-    ),
-    re_path(r"^(?P<username>[\w-]+)/edit/$", update_moderator, name="moderator_update"),
-    re_path(
-        r"^(?P<username>[\w-]+)/delete/$", delete_moderator, name="moderator_delete"
-    ),
+    path("<slug:username>/detail/", moderator_detail, name="moderator_detail"),
+    path("<slug:username>/edit/", update_moderator, name="moderator_update"),
+    path("<slug:username>/delete/", delete_moderator, name="moderator_delete"),
     path("list/", moderator_list, name="moderator_list"),
-    re_path(r"^topics/(?P<slug>[\w-]+)/hide/$", hide_thread, name="thread_hide"),
-    re_path(r"^topics/(?P<slug>[\w-]+)/unhide/$", unhide_thread, name="thread_unhide"),
-    re_path(
-        r"^topics/(?P<thread_slug>[\w-]+)/(?P<comment_pk>[\w-]+)/hide/$",
+    path("topics/<slug:slug>/hide/", hide_thread, name="thread_hide"),
+    path("topics/<slug:slug>/unhide/", unhide_thread, name="thread_unhide"),
+    path(
+        "topics/<slug:thread_slug>/<int:comment_pk>/hide/",
         hide_comment,
         name="comment_hide",
     ),
-    re_path(
-        r"^topics/(?P<thread_slug>[\w-]+)/(?P<comment_pk>[\w-]+)/unhide/$",
+    path(
+        "topics/<slug:thread_slug>/<int:comment_pk>/unhide/",
         unhide_comment,
         name="comment_unhide",
     ),

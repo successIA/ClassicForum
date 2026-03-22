@@ -1,4 +1,4 @@
-from django.urls import re_path
+from django.urls import path, re_path
 
 from forum.categories.views import category_detail
 from forum.threads.views import create_thread
@@ -6,7 +6,7 @@ from forum.threads.views import create_thread
 app_name = "categories"
 
 urlpatterns = [
-    re_path(r"^(?P<slug>[\w-]+)/$", category_detail, name="category_detail"),
+    path("<slug:slug>/", category_detail, name="category_detail"),
     re_path(
         r"(?P<slug>[\w-]+)/(?P<filter_str>[\w-]+)/(?P<page>[\d]*)?/create-thread/$",
         create_thread,

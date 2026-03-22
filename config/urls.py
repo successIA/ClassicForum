@@ -18,13 +18,11 @@ urlpatterns = [
     path("categories/", include("forum.categories.urls", namespace="categories")),
     path("threads/", include("forum.threads.urls", namespace="threads")),
     path("accounts/", include("forum.accounts.urls", namespace="accounts")),
-    re_path(r"^(?P<thread_slug>[\w-]+)/follow/$", follow_thread, name="thread_follow"),
-    re_path(r"^topics/(?P<thread_slug>[\w-]+)/$", thread_detail, name="thread_detail"),
-    re_path(
-        r"^topics/(?P<thread_slug>[\w-]+)/edit/$", update_thread, name="thread_update"
-    ),
-    re_path(
-        r"^topics/(?P<thread_slug>[\w-]+)/comments/",
+    path("<slug:thread_slug>/follow/", follow_thread, name="thread_follow"),
+    path("topics/<slug:thread_slug>/", thread_detail, name="thread_detail"),
+    path("topics/<slug:thread_slug>/edit/", update_thread, name="thread_update"),
+    path(
+        "topics/<slug:thread_slug>/comments/",
         include("forum.comments.urls", namespace="comments"),
     ),
     path("upload/", include("forum.attachments.urls", namespace="attachments")),

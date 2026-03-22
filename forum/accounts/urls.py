@@ -58,8 +58,8 @@ urlpatterns = [
         ),
         name="password_reset_done",
     ),
-    re_path(
-        r"auth/reset/(?P<uidb64>[0-9A-Za-z_\-]+)/(?P<token>[0-9A-Za-z]{1,13}-[0-9A-Za-z]{1,20})/$",
+    path(
+        "auth/reset/<str:uidb64>/<str:token>/",
         auth_views.PasswordResetConfirmView.as_view(
             template_name="accounts/password_reset_confirm.html",
             success_url=reverse_lazy("accounts:password_reset_complete"),
@@ -107,21 +107,11 @@ urlpatterns = [
         user_thread_list,
         name="thread_user",
     ),
-    re_path(r"(?P<username>[\w-]+)/info/$", user_profile_edit, name="user_edit"),
-    re_path(r"(?P<username>[\w-]+)/follow/$", follow_user, name="user_follow"),
-    re_path(
-        r"(?P<username>[\w-]+)/user-following/$", user_following, name="user_following"
-    ),
-    re_path(
-        r"(?P<username>[\w-]+)/user-followers/$", user_followers, name="user_followers"
-    ),
-    re_path(
-        r"(?P<username>[\w-]+)/comments/$", user_comment_list, name="user_comments"
-    ),
-    re_path(
-        r"(?P<username>[\w-]+)/notifications/$",
-        user_notification_list,
-        name="user_notifs",
-    ),
-    re_path(r"(?P<username>[\w-]+)/$", user_profile_stats, name="user_stats"),
+    path("<slug:username>/info/", user_profile_edit, name="user_edit"),
+    path("<slug:username>/follow/", follow_user, name="user_follow"),
+    path("<slug:username>/user-following/", user_following, name="user_following"),
+    path("<slug:username>/user-followers/", user_followers, name="user_followers"),
+    path("<slug:username>/comments/", user_comment_list, name="user_comments"),
+    path("<slug:username>/notifications/", user_notification_list, name="user_notifs"),
+    path("<slug:username>/", user_profile_stats, name="user_stats"),
 ]
